@@ -6,13 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class UIManagerScript : MonoBehaviour {
 
-    public void LoadTest1()
+    public void LoadShit(string levelToLoad)
     {
-        SceneManager.LoadScene("Test1");
+        SceneManager.LoadScene(levelToLoad);
     }
 
-    public void LoadTest2()
+    public void Quit()
     {
-        SceneManager.LoadScene("Test2");
+        Application.Quit(); // why is this a fucking thing if it doesn't do anything?
+    }
+
+    public void LoadGame()
+    {
+
     }
 }

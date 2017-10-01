@@ -42,7 +42,7 @@ namespace RTS_Cam
 
         #region Height
 
-        public bool autoHeight = true;
+        public bool autoHeight = false;
         public LayerMask groundMask = -1; //layermask of ground or other objects that affect height
 
         public float maxHeight = 10f; //maximal height

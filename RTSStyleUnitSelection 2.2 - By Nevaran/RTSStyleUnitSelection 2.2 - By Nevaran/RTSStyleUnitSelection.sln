@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{1B731A77-B142-4AB8-E6E0-B0D2228F9330}") = "RTSStyleUnitSelection", "Assembly-CSharp.csproj", "{4BA80F9F-B944-04AD-AF52-10DEB789DCAA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BA80F9F-B944-04AD-AF52-10DEB789DCAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BA80F9F-B944-04AD-AF52-10DEB789DCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BA80F9F-B944-04AD-AF52-10DEB789DCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BA80F9F-B944-04AD-AF52-10DEB789DCAA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

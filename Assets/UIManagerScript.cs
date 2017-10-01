@@ -19,6 +19,8 @@ public class UIManagerScript : MonoBehaviour {
     {
         SceneManager.LoadScene(levelToLoad);
     }
+		
+
 
     public void Quit()
     {

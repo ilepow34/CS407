@@ -79,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameListing.cs" />
+    <Compile Include="Assets\GameLobbyController.cs" />
+    <Compile Include="Assets\GameNameController.cs" />
+    <Compile Include="Assets\GameStaticData.cs" />
     <Compile Include="Assets\ListController.cs" />
     <Compile Include="Assets\ListItemController.cs" />
     <Compile Include="Assets\UIManagerScript.cs" />

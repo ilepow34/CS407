@@ -191,6 +191,8 @@
      <Compile Include="Assets\GameStaticData.cs" />
      <Compile Include="Assets\ListController.cs" />
      <Compile Include="Assets\ListItemController.cs" />
+     <Compile Include="Assets\PlayerController.cs" />
+     <Compile Include="Assets\PlayerNameController.cs" />
      <Compile Include="Assets\ToggleMusic.cs" />
      <Compile Include="Assets\UIManagerScript.cs" />
      <None Include="Assets\Assets\Assets\Standard Assets\Projectors\Guidelines.txt" />

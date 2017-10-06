@@ -55,10 +55,11 @@ public class GameControl : MonoBehaviour {
 						Debug.Log(CurrentlySelectedUnits.Count);
 						
 						// if the shiftkey is NOT down, remove all the units
-						if (!ShiftKeysDown())
+						if (!ShiftKeysDown ()) {
+							Debug.Log ("shift isnt down");
 							DeselectGameObjectsIfSelected();
-
-							if (CurrentlySelectedUnits.Count == 0)
+						}
+							if (CurrentlySelectedUnits.Count >= 0)
 							{
 							CurrentlySelectedUnits.Add(hit.transform.gameObject);
 							GameObject selectedObj = hit.collider.transform.Find("Selected").gameObject;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStaticData : MonoBehaviour {
-    public static string GameName = "Game1";
+    public static string GameName = "Default";
     public static AudioSource sound;
     public static bool musicPlaying = false;
     public static string PlayerName = "Default";

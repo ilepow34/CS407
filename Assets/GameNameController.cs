@@ -5,11 +5,23 @@ using UnityEngine.UI;
 
 public class GameNameController : MonoBehaviour {
 
-    public Text GameName;
+    public Text GameNameText;
+    public InputField GameNameInput;
 
 	// Use this for initialization
 	void Start () {
-        GameName.text = GameStaticData.GameName;
+        if (GameNameText != null) {
+            GameNameText.text = GameStaticData.GameName;
+        }
+        if (GameNameInput != null && GameStaticData.GameName != "Default") {
+            GameNameInput.text = GameStaticData.GameName;
+        }
+    }
+
+    void Update() {
+        if (GameNameInput != null && GameNameInput.text != "" && GameStaticData.GameName != GameNameInput.text) {
+            GameStaticData.GameName = GameNameInput.text;
+        }
     }
 	
 }

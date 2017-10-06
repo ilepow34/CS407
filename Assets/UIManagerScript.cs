@@ -7,19 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class UIManagerScript : MonoBehaviour {
 
-	public Text gameNameInput;
-
-	public void LoadGameLobby() {
-		GameStaticData.GameName = gameNameInput.text;
-		SceneManager.LoadScene ("GameLobby");
-	}
-
-
     public void LoadShit(string levelToLoad)
     {
-        if (gameNameInput != null) {
-            GameStaticData.GameName = gameNameInput.text;
-        }
         SceneManager.LoadScene(levelToLoad);
     }
 		

@@ -17,6 +17,9 @@ public class UIManagerScript : MonoBehaviour {
 
     public void LoadShit(string levelToLoad)
     {
+        if (gameNameInput != null) {
+            GameStaticData.GameName = gameNameInput.text;
+        }
         SceneManager.LoadScene(levelToLoad);
     }
 		

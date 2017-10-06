@@ -9,7 +9,7 @@ public class GameControl : MonoBehaviour {
 	public GameObject Target;
 	public static Vector3 mouseDownPoint;
 	public GameObject mousedot;
-
+	public GameObject bldg;
 		
 		void Awake()
 	{
@@ -24,11 +24,30 @@ public class GameControl : MonoBehaviour {
 			
 			if(Physics.Raycast(ray, out hit, Mathf.Infinity)){
 			// store point at mouse button down
-			if(Input.GetMouseButtonDown(0)) mouseDownPoint = hit.point;
+			if(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2)) mouseDownPoint = hit.point;
+
 
 			if(hit.transform.tag == "Ground")
 			{
-				if(Input.GetMouseButtonDown(1))
+				if (Input.GetMouseButtonDown(2) ) {
+					Debug.Log ("build is pressed");
+					//Target.transform.position = hit.point;
+					//Vector3 p = Camera.main.**ScreenToWorldPoint;
+					/*Vector3 p = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,10.0f));
+					print(p);
+					print(p.x);
+					print(p.y);
+
+					Instantiate(bldg,new Vector3(p.x,p.y, 0.0f),Quaternion.identity);*/
+					Vector3 rayInfo;
+
+					Instantiate(bldg, mouseDownPoint, Quaternion.identity);
+						
+					//Instantiate (bldg,Target.transform);
+				}
+
+
+				 if(Input.GetMouseButtonDown(1))
 				{
 					Target.transform.position = hit.point;
 
@@ -40,11 +59,58 @@ public class GameControl : MonoBehaviour {
 					}
 
 				}
-
+				if(Input.GetMouseButtonDown(0)) DeselectGameObjectsIfSelected();
 			}// end of Ground
+			/*else if(hit.transform.tag == "Bldg"){
+				if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
+				{
+					// is the user hitting the unit? ie. something selectable
+					if (hit.collider.transform.Find("Selected"))
+					{
+						
+						// found a selectable unit
+						Debug.Log("HIT: "+CurrentlySelectedUnits.Count);
 
-			else if(hit.transform.tag == "Unit")
+						// if the shiftkey is NOT down, remove all the units
+						if (!ShiftKeysDown ()) {
+							Debug.Log ("shift isnt down");
+							DeselectGameObjectsIfSelected();
+						}
+						if (CurrentlySelectedUnits.Count >= 0)
+						{
+							CurrentlySelectedUnits.Add(hit.transform.gameObject);
+							GameObject selectedObj = hit.collider.transform.Find("Selected").gameObject;
+							selectedObj.SetActive(true);
+						}
+
+
+						// are we selecting a different object?
+						else if (UnitAlreadyInCurrentlySelectedUnits(hit.collider.gameObject))
+						{
+							GameObject selectedObj = hit.collider.transform.Find("Selected").gameObject;
+							selectedObj.SetActive(true);
+
+							// add unit to the currently selected units
+							CurrentlySelectedUnits.Add(hit.collider.gameObject);
+						}
+						else // what if the unit is already in the currently selected units
+						{
+							// we need to remove the unit
+							RemoveUnitFromCurrentlySelectedUnits(hit.collider.gameObject);
+						}
+					}
+					else // if this object is not selectable
+					{
+						if (!ShiftKeysDown())
+							DeselectGameObjectsIfSelected(); 
+					}
+				}
+
+			}*/
+			else if(hit.transform.tag == "Unit"||hit.transform.tag == "Bldg")
 			{
+				if (hit.transform.tag == "Bldg")
+					Debug.Log ("AAHHHH");
 				// hitting other objects
 				if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
 				{
@@ -171,6 +237,13 @@ public class GameControl : MonoBehaviour {
 		else
 			return false;
 	}
-	
+	public static bool CtrlDown()
+	{
+		if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+			return true;
+		else
+			return false;
+	}
+
 	#endregion
 }

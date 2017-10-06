@@ -17,9 +17,9 @@ function Start () {
 	
 }
 
-function addToArray[addition:GameObject, array:GameObject[]):GameObject[]{
+function addToArray(addition:GameObject, array:GameObject[]):GameObject[]{
     var tempArray:GameObject[] = new GameObject[array.length+1];
-    for var i = 0; i < array.length; i++){
+    for (var i = 0; i < array.length; i++){
         tempArray[i] = array[i];
     }
     tempArray[tempArray.length-1] = addition;
@@ -32,5 +32,5 @@ function addBuildings(source:GameObject){
 }
 
     function addUnits(source:GameObject){
-        units = addToArray(sournce, units);
+        units = addToArray(source, units);
     }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameControl : MonoBehaviour {
@@ -10,8 +11,9 @@ public class GameControl : MonoBehaviour {
 	public static Vector3 mouseDownPoint;
 	public GameObject mousedot;
 	public GameObject bldg;
-	public int money = 500;
-	public float moneyTimer = 10.0f;
+	public int money;
+	public float moneyTimer;
+	public Text moneyText;
 		
 		void Awake()
 	{
@@ -21,11 +23,14 @@ public class GameControl : MonoBehaviour {
 	
 		void Update ()
 		{		
-		//regenerate 50 money every 10 seconds
-		if (moneyTimer <= 0.0f) {
-			money += 50;
-			moneyTimer += 10.0f;
-		}
+			moneyTimer -= Time.deltaTime;
+			//regenerate 50 money every 10 seconds
+			if (moneyTimer <= 0.0f) {
+				money += 50;
+				moneyTimer += 10.0f;
+			}
+			moneyText.text = "Money: " + money.ToString ();
+
 
 
 		//ray casting to find out where the ground is and what is moveable	

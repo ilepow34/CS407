@@ -115,12 +115,6 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="Pathfinding.Ionic.Zip.Reduced">
-      <HintPath>Assets\Assets\Assets\Plugins\AstarPathfindingProject\Plugins\DotNetZip\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
-    <Reference Include="Pathfinding.JsonFx">
-      <HintPath>Assets\Assets\Assets\Plugins\AstarPathfindingProject\Plugins\JsonFx\Pathfinding.JsonFx.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-UnityScript">
       <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
     </Reference>
@@ -137,17 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Assets\Assets\My scripts\NewShader.shader" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\ExampleScenes\Materials\Projector Multiply.shader" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\Plugins\DotNetZip\License.txt" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\Plugins\JsonFx\License.txt" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\Plugins\JsonFx\Readme.txt" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\Plugins\dependencies.txt" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\Readme.txt" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\Readme_upgrading.txt" />
-    <None Include="Assets\Assets\Assets\Plugins\AstarPathfindingProject\link.xml" />
     <None Include="Assets\Assets\UnitSelection\Projector\ProjectorAdditiveTint.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

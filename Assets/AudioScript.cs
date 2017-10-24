@@ -13,7 +13,8 @@ public class AudioScript : MonoBehaviour {
             music = this.gameObject;
             music.name = "MUSIC";
             DontDestroyOnLoad(music);
-            GameStaticData.sound = this.sound;
+	    GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
+            gameStaticData.sound = this.sound;
         } else {
             if (this.gameObject.name != "MUSIC") {
                 Destroy(this.gameObject);

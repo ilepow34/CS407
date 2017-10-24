@@ -8,16 +8,21 @@ public class PlayerNameController : MonoBehaviour {
     public InputField PlayerName;
 
 	// Use this for initialization
-	void Start () {
-        if (GameStaticData.PlayerName != "Default") {
-            PlayerName.text = GameStaticData.PlayerName;
-        }
+	void Start ()
+	{
+	    GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
+            if (gameStaticData.PlayerName != "Default") {
+            	PlayerName.text = gameStaticData.PlayerName;
+       	    }
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	    if (PlayerName.text != "" && PlayerName.text != GameStaticData.PlayerName) {
-            GameStaticData.PlayerName = PlayerName.text;
-        }
+	void Update () 
+	{
+	    GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
+	    if (PlayerName.text != "" && PlayerName.text != gameStaticData.PlayerName)
+	    {
+                gameStaticData.PlayerName = PlayerName.text;
+            }
 	}
 }

@@ -10,17 +10,21 @@ public class GameNameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+	GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
+
         if (GameNameText != null) {
-            GameNameText.text = GameStaticData.GameName;
+            GameNameText.text = gameStaticData.GameName;
         }
-        if (GameNameInput != null && GameStaticData.GameName != "Default") {
-            GameNameInput.text = GameStaticData.GameName;
+        if (GameNameInput != null && gameStaticData.GameName != "Default") {
+            GameNameInput.text = gameStaticData.GameName;
         }
     }
 
     void Update() {
-        if (GameNameInput != null && GameNameInput.text != "" && GameStaticData.GameName != GameNameInput.text) {
-            GameStaticData.GameName = GameNameInput.text;
+	GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
+        if (GameNameInput != null && GameNameInput.text != "" && gameStaticData.GameName != GameNameInput.text) {
+            gameStaticData.GameName = GameNameInput.text;
         }
     }
 	

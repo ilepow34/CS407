@@ -20,11 +20,12 @@ public class MoneyScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		moneyTimer -= Time.deltaTime;
-		//regenerate 50 money every 10 seconds
-		if (moneyTimer <= 0.0f) {
-			GameManager.money += intervalAmount;
+        //regenerate 50 money every 10 seconds
+        GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
+        if (moneyTimer <= 0.0f) {
+			gameManager.money += intervalAmount;
 			moneyTimer += timerInterval;
 		}
-		moneyText.text = "Money: " + GameManager.money.ToString ();
+		moneyText.text = "Money: " + gameManager.money.ToString ();
 	}
 }

@@ -34,17 +34,18 @@ public class GameControl : MonoBehaviour {
 			{
 				if (Input.GetMouseButtonDown(2) ) {
 					Debug.Log ("build is pressed");
-					//Target.transform.position = hit.point;
-					//Vector3 p = Camera.main.**ScreenToWorldPoint;
-					/*Vector3 p = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,10.0f));
+                    //Target.transform.position = hit.point;
+                    //Vector3 p = Camera.main.**ScreenToWorldPoint;
+                    /*Vector3 p = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,10.0f));
 					print(p);
 					print(p.x);
 					print(p.y);
 
 					Instantiate(bldg,new Vector3(p.x,p.y, 0.0f),Quaternion.identity);*/
-					//Building costs 100 here
-					if (GameManager.money >= 100) {
-						GameManager.money -= 100;
+                    //Building costs 100 here
+                    GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
+                    if (gameManager.money >= 100) {
+						gameManager.money -= 100;
 						Vector3 rayInfo;
 						Instantiate (bldg, mouseDownPoint, Quaternion.identity);
 					} else {

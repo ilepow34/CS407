@@ -42,10 +42,14 @@ public class GameControl : MonoBehaviour {
 					print(p.y);
 
 					Instantiate(bldg,new Vector3(p.x,p.y, 0.0f),Quaternion.identity);*/
-					Vector3 rayInfo;
-
-					Instantiate (bldg, mouseDownPoint, Quaternion.identity);
-						
+					//Building costs 100 here
+					if (GameManager.money >= 100) {
+						GameManager.money -= 100;
+						Vector3 rayInfo;
+						Instantiate (bldg, mouseDownPoint, Quaternion.identity);
+					} else {
+						Debug.Log ("Not enough money");
+					}
 					//Instantiate (bldg,Target.transform);
 				}
 

@@ -11,9 +11,6 @@ public class GameControl : MonoBehaviour {
 	public static Vector3 mouseDownPoint;
 	public GameObject mousedot;
 	public GameObject bldg;
-	public int money;
-	public float moneyTimer;
-	public Text moneyText;
 		
 		void Awake()
 	{
@@ -23,13 +20,6 @@ public class GameControl : MonoBehaviour {
 	
 		void Update ()
 		{		
-			moneyTimer -= Time.deltaTime;
-			//regenerate 50 money every 10 seconds
-			if (moneyTimer <= 0.0f) {
-				money += 50;
-				moneyTimer += 10.0f;
-			}
-			moneyText.text = "Money: " + money.ToString ();
 
 
 
@@ -39,7 +29,6 @@ public class GameControl : MonoBehaviour {
 			if(Physics.Raycast(ray, out hit, Mathf.Infinity)){
 			// store point at mouse button down
 			if(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2)) mouseDownPoint = hit.point;
-
 
 			if(hit.transform.tag == "Ground")
 			{
@@ -55,13 +44,7 @@ public class GameControl : MonoBehaviour {
 					Instantiate(bldg,new Vector3(p.x,p.y, 0.0f),Quaternion.identity);*/
 					Vector3 rayInfo;
 
-					//building costs 250
-					if (money >= 250) {
-						Instantiate (bldg, mouseDownPoint, Quaternion.identity);
-						money -= 250;
-					} else {
-						Debug.Log ("Not enough money");
-					}
+					Instantiate (bldg, mouseDownPoint, Quaternion.identity);
 						
 					//Instantiate (bldg,Target.transform);
 				}

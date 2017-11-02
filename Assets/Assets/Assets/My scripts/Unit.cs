@@ -32,7 +32,7 @@ public class Unit : MonoBehaviour
             range = 10;
             dmg = 5;
         }
-        if (type.Equals("turret")) {
+        else if (type.Equals("turret")) {
             TreeHealth = 250;
             range = 10;
             dmg = 20;
@@ -68,7 +68,7 @@ public class Unit : MonoBehaviour
     //applying damage to tree
     public void ApplyDamage(float damage)
     {
-        TreeHealth = -damage;
+        TreeHealth -=damage;
 
         if (TreeHealth <= 0.0) { Destroy(this.gameObject); }
 
@@ -92,7 +92,7 @@ public class Unit : MonoBehaviour
 
         }
         else damage = 0;
-        logTimer = 15.0f;
+        logTimer = 20.0f;
     }
 
     // Update is called once per frame
@@ -116,7 +116,7 @@ public class Unit : MonoBehaviour
 
                     ApplyDamage(damage);
                     //getdmg(damage);
-                    logTimer += 15.0f;
+                    logTimer += 20.0f;
                     //force parameters
                     /*float xforce = Random.Range(-50.0f, 50.0f);
                     float zforce = Random.Range(-50.0f, 50.0f);

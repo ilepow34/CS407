@@ -12,7 +12,7 @@ public class MoneyScript : MonoBehaviour {
 	public Text moneyText;
 	// Use this for initialization
 	void Start () {
-		moneyTimer = 10.0f;
+		moneyTimer = 30.0f;
 		timerInterval = 10.0f;
 		intervalAmount = 50;
 	}

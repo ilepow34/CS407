@@ -23,7 +23,7 @@ public class TreechopNew : MonoBehaviour
 	// Use this for initialization
 	void OnTriggerEnter (Collider other) 
 	{
-		logTimer = 15.0f;
+		logTimer = 10.0f;
 	}
 	
 	// Update is called once per frame
@@ -32,16 +32,24 @@ public class TreechopNew : MonoBehaviour
 		logTimer -= Time.deltaTime;
 		if(logTimer <= 0.0f)
 		{
-			logTimer += 15.0f;
+			logTimer += 10.0f;
 			//force parameters
 			float xforce = Random.Range(-50.0f, 50.0f);
 			float zforce = Random.Range(-50.0f, 50.0f);
-			
-			
-			//									//spawn object
-			GameObject gameObject = (GameObject)Instantiate(TreePrefab, Spawner.position, Spawner.rotation);
+
+            GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
+        
+                gameManager.money += 20;
+                // Vector3 rayInfo;
+                // Instantiate(bldg, mouseDownPoint, Quaternion.identity);
+                //GameObject gameObject = (GameObject)Instantiate(other.transform.parent.gameObject, Spawner.position, Spawner.rotation);
+                gameObject.GetComponent<Rigidbody>().AddForce(xforce, 0.0f, zforce);
+           
+          
+            //									//spawn object
+           //GameObject gameObject = (GameObject)Instantiate(TreePrefab, Spawner.position, Spawner.rotation);
 			//adding force
-			gameObject.GetComponent<Rigidbody>().AddForce(xforce, 0.0f, zforce);
+			//gameObject.GetComponent<Rigidbody>().AddForce(xforce, 0.0f, zforce);
 		}
 	}	
 }

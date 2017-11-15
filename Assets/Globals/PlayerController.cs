@@ -10,7 +10,10 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
-		PlayerName.text = gameStaticData.PlayerName;
+        if (gameStaticData != null)
+        {
+		    PlayerName.text = gameStaticData.PlayerName;
+        }
 	}
 	
 	// Update is called once per frame

@@ -10,8 +10,10 @@ public class Toolbox : Singleton<Toolbox>
 
 	void Start()
 	{
-		GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
-		Debug.Log(gameStaticData.GameName);
+        GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
+        gameStaticData.GameName = "Default";
+        gameStaticData.PlayerName = "Default";
+        gameStaticData.isHost = true;
 	}
 
 	void Awake()

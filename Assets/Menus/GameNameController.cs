@@ -10,8 +10,9 @@ public class GameNameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        GameObject.Find("LobbyManager"); // initialize it?
 
-	GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
+    	GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
 
         if (GameNameText != null) {
             GameNameText.text = gameStaticData.GameName;
@@ -22,6 +23,9 @@ public class GameNameController : MonoBehaviour {
     }
 
     void Update() {
+        if (GameNameInput == null) {
+            return;
+        }
 	GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
         if (GameNameInput != null && GameNameInput.text != "" && gameStaticData.GameName != GameNameInput.text) {
             gameStaticData.GameName = GameNameInput.text;

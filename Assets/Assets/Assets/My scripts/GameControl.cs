@@ -11,7 +11,7 @@ public class GameControl : MonoBehaviour {
 	public static Vector3 mouseDownPoint;
 	public GameObject mousedot;
 	public GameObject bldg;
-    public bool plyrfaction = false;
+    public static bool plyrfaction = false;
     void Awake()
 	{
 		mouseDownPoint = Vector3.zero;

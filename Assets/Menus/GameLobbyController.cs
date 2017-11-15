@@ -10,7 +10,10 @@ public class GameLobbyController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameStaticData gameStaticData = Toolbox.RegisterComponent<GameStaticData>();
+        if (gameStaticData != null)
+        {
         	GameName.text = gameStaticData.GameName;
+        }
 	}
 	
 	// Update is called once per frame

@@ -1,0 +1,9 @@
+/*
+/*/
+
+!.gitignore
+!/Assets/
+!/ProjectSettings/
+!README.md
+!/Packages/
+!/UnityPackageManager/

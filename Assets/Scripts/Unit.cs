@@ -17,6 +17,10 @@ public class Unit : NetworkBehaviour
     int targetIndex;
     public int fact = 0;
 
+    public TextMesh textMeshPrefab;
+
+
+    
 
     //public GameObject TreePrefab;
 
@@ -25,11 +29,21 @@ public class Unit : NetworkBehaviour
     public float TreeHealth = 100.0f;
     private int damage = 0;
     public Transform Spawner;
+    TextMesh wallTxt;
+    private void Update()
+    {
+        wallTxt.transform.LookAt(Camera.main.transform.position);
+        wallTxt.transform.RotateAround(wallTxt.transform.position, wallTxt.transform.up, 180f);
+    }
     void Start()
     {
-		
-		//faction = GameControl.plyrfaction;
-		
+        //TextMesh tt = gameObject.AddComponent(TextMesh);
+        //faction = GameControl.plyrfaction;
+        wallTxt = Instantiate(textMeshPrefab,Vector3.zero, Quaternion.identity);
+        wallTxt.transform.position = gameObject.transform.position;
+        wallTxt.transform.rotation = gameObject.transform.rotation;
+        wallTxt.transform.SetParent(gameObject.transform);
+        //wallTxt.transform.LookAt(Camera.main.transform.position, Vector3.right);
         range = 15;
         dmg = 10;
         if (type.Equals("builder"))
@@ -77,12 +91,13 @@ public class Unit : NetworkBehaviour
             //gameObject.GetComponent<Renderer>. = Color.red;
 
         }
+        wallTxt.text = "" + TreeHealth;
     }
     //applying damage to tree
     public void ApplyDamage(float damage)
     {
         TreeHealth -= damage;
-
+        wallTxt.text = "" + TreeHealth;
         if (TreeHealth <= 0.0) { Destroy(this.gameObject); }
 
     }

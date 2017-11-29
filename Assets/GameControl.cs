@@ -20,17 +20,30 @@ public class GameControl : NetworkBehaviour {
     
 	private bool runOnce = false;
 	
+    // position, team, etc things the server needs to know
 	[Command]
 	void CmdSpawnInitBuilder(Vector3 position, Quaternion rotation, int connectionId, bool fact)
 	{
+
+        // instantiate object on server
 		GameObject builder = Instantiate(builderPrefab, position,rotation) as GameObject;
-		builder.GetComponent<Unit>().faction = fact;
+		
+        // manipulate anything. this was just for testing to see if it syncd properties
+        builder.GetComponent<Unit>().faction = fact;
 		builder.GetComponent<Unit>().type = "SPAWNED FROM SERVER";
 		Debug.Log("Spawninbg shit: " + fact);
+
+        // this then spawns it on clients and sets the owner properly
 		NetworkServer.SpawnWithClientAuthority(builder, NetworkServer.connections[connectionId]);
 	}
 	
 	
+    // this is just a sleep timer essentially to allow both clients to load the game before begging to spawn units.
+    //
+    // runs on client.
+    // calls a command that then runs on server
+    // ALL commands run on server always
+    // so we pass any information the server needs through the command parameters
 	IEnumerator WaitForIt(float waitTime)
 {
     yield return new WaitForSeconds(waitTime);

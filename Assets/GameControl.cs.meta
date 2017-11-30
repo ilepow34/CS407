@@ -1,10 +1,14 @@
 fileFormatVersion: 2
 guid: fd6722369c51cb243a92b1081ccb5767
-timeCreated: 1510966428
+timeCreated: 1512007138
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Target: {instanceID: 0}
+  - mousedot: {instanceID: 0}
+  - bldg: {fileID: 1830203795086358, guid: a7a16611dceb9614f984cd4f0f374426, type: 2}
+  - builderPrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

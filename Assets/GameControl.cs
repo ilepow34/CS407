@@ -36,8 +36,23 @@ public class GameControl : NetworkBehaviour {
         // this then spawns it on clients and sets the owner properly
 		NetworkServer.SpawnWithClientAuthority(builder, NetworkServer.connections[connectionId]);
 	}
-	
-	
+
+	//Straight copied this from Nick's function
+	[Command]
+	void CmdSpawnUnit(GameObject unit, Vector3 position, Quaternion rotation, int connectionId, bool fact)
+	{
+
+		// instantiate object on server
+		GameObject builder = Instantiate(unit, position,rotation) as GameObject;
+
+		// manipulate anything. this was just for testing to see if it syncd properties
+		builder.GetComponent<Unit>().faction = fact;
+		builder.GetComponent<Unit>().type = "SPAWNED FROM SERVER2";
+		Debug.Log("Spawninbg2 shit: " + fact);
+
+		// this then spawns it on clients and sets the owner properly
+		NetworkServer.SpawnWithClientAuthority(builder, NetworkServer.connections[connectionId]);
+	}
     // this is just a sleep timer essentially to allow both clients to load the game before begging to spawn units.
     //
     // runs on client.
@@ -58,15 +73,12 @@ public class GameControl : NetworkBehaviour {
 	
 	void Awake()
 	{
-
-		
 		mouseDownPoint = Vector3.zero;
 	}
 		
 	
-		void Update ()
+	void Update ()
 		{
-
 		if (!isLocalPlayer) {
 			return;
 		}		
@@ -106,8 +118,7 @@ public class GameControl : NetworkBehaviour {
                     if (gameManager.money >= 100)
                     {
                         gameManager.money -= 100;
-                        Vector3 rayInfo;
-                        Instantiate(bldg, mouseDownPoint, Quaternion.identity);
+						CmdSpawnUnit(bldg, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
                     }
                     else
                     {
@@ -245,8 +256,6 @@ public class GameControl : NetworkBehaviour {
                             DeselectGameObjectsIfSelected();
                     }
                 }
-
-
             }
             Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.yellow);
 		}

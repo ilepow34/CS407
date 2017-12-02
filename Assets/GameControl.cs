@@ -13,8 +13,8 @@ public class GameControl : NetworkBehaviour {
 	public static Vector3 mouseDownPoint;
 	public GameObject mousedot;
 	public GameObject bldg;
-	
 	public GameObject builderPrefab;
+	public GameObject unitToSpawn;
 	
     public static bool plyrfaction = false;
     
@@ -53,6 +53,14 @@ public class GameControl : NetworkBehaviour {
 		// this then spawns it on clients and sets the owner properly
 		NetworkServer.SpawnWithClientAuthority(builder, NetworkServer.connections[connectionId]);
 	}
+
+	//Changes the unit to be placed based
+	//Buttons in the GUI will cause different values to be passed to this
+	public void ChangeUnit(int n) {
+		GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
+		gameManager.unitToSpawn = n;
+	}
+
     // this is just a sleep timer essentially to allow both clients to load the game before begging to spawn units.
     //
     // runs on client.
@@ -88,11 +96,6 @@ public class GameControl : NetworkBehaviour {
 			runOnce = true;	
 		}
 
-
-		//if (!isLocalPlayer) {
-		//	return;
-		//}
-
 		//ray casting to find out where the ground is and what is moveable	
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			
@@ -102,29 +105,26 @@ public class GameControl : NetworkBehaviour {
 
             if (hit.transform.tag == "Ground")
             {
+				//Unit/building spawning
                 if (Input.GetMouseButtonDown(2))
                 {
                     Debug.Log("build is pressed");
-                    //Target.transform.position = hit.point;
-                    //Vector3 p = Camera.main.**ScreenToWorldPoint;
-                    /*Vector3 p = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,10.0f));
-					print(p);
-					print(p.x);
-					print(p.y);
-
-					Instantiate(bldg,new Vector3(p.x,p.y, 0.0f),Quaternion.identity);*/
-                    //Building costs 100 here
                     GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
-                    if (gameManager.money >= 100)
+					if (gameManager.unitToSpawn == 0) {
+						unitToSpawn = bldg;
+					}
+					if (gameManager.unitToSpawn == 1) {
+						unitToSpawn = builderPrefab;
+					}
+					if (gameManager.money >= gameManager.unitCost)
                     {
-                        gameManager.money -= 100;
-						CmdSpawnUnit(bldg, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+						gameManager.money -= gameManager.unitCost;
+						CmdSpawnUnit(unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
                     }
                     else
                     {
                         Debug.Log("Not enough money");
                     }
-                    //Instantiate (bldg,Target.transform);
                 }
 
 

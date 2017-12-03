@@ -41,6 +41,7 @@ public class GameControl : NetworkBehaviour {
 	[Command]
 	void CmdSpawnUnit(GameObject unit, Vector3 position, Quaternion rotation, int connectionId, bool fact)
 	{
+        Debug.Log("Running cmd spawn");
 
 		// instantiate object on server
 		GameObject builder = Instantiate(unit, position,rotation) as GameObject;
@@ -48,7 +49,7 @@ public class GameControl : NetworkBehaviour {
 		// manipulate anything. this was just for testing to see if it syncd properties
 		builder.GetComponent<Unit>().faction = fact;
 		builder.GetComponent<Unit>().type = "SPAWNED FROM SERVER2";
-		Debug.Log("Spawninbg2 shit: " + fact);
+		Debug.Log("Spawninbg2900090909090909090 shit: " + fact);
 
 		// this then spawns it on clients and sets the owner properly
 		NetworkServer.SpawnWithClientAuthority(builder, NetworkServer.connections[connectionId]);

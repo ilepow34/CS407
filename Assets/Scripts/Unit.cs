@@ -26,7 +26,9 @@ public class Unit : NetworkBehaviour
 
     public float logTimer;
     //public GameObject TreeArea;
+    [SyncVar]
     public float TreeHealth = 100.0f;
+    public float MaxHealth = 100.0f;
     private int damage = 0;
     public Transform Spawner;
     TextMesh wallTxt;
@@ -34,9 +36,39 @@ public class Unit : NetworkBehaviour
     {
         wallTxt.transform.LookAt(Camera.main.transform.position);
         wallTxt.transform.RotateAround(wallTxt.transform.position, wallTxt.transform.up, 180f);
+
+
     }
+
+    [Command]
+    void CmdDestroyNetworkIdentity(NetworkInstanceId netId) {
+        GameObject obj = NetworkServer.FindLocalObject(netId);
+        NetworkServer.Destroy(obj);
+    }
+
+    [Command]
+    void CmdTakeDamage(NetworkInstanceId netId, int dmgToTake) {
+        GameObject obj = NetworkServer.FindLocalObject(netId);
+        Unit unit = obj.GetComponent<Unit>();
+        unit.TreeHealth -= dmgToTake;
+    }
+
+    void decreaseHealth() {
+        if (!hasAuthority) {
+            return;
+        }
+        NetworkIdentity networkIdentity = gameObject.GetComponent<NetworkIdentity>();
+        CmdTakeDamage(networkIdentity.netId, 20);
+        if (TreeHealth <= 0) {
+            CmdDestroyNetworkIdentity(networkIdentity.netId);
+        }
+    }
+
     void Start()
     {
+        // for debugging
+        InvokeRepeating("decreaseHealth", 1.0f, 1.0f);
+
         //TextMesh tt = gameObject.AddComponent(TextMesh);
         //faction = GameControl.plyrfaction;
         wallTxt = Instantiate(textMeshPrefab,Vector3.zero, Quaternion.identity);
@@ -91,6 +123,7 @@ public class Unit : NetworkBehaviour
             //gameObject.GetComponent<Renderer>. = Color.red;
 
         }
+        MaxHealth = TreeHealth;
         wallTxt.text = "" + TreeHealth;
     }
     //applying damage to tree

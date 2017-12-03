@@ -19,8 +19,11 @@ public class Unit : NetworkBehaviour
 
     public TextMesh textMeshPrefab;
 
+    GameObject unitlist;
+    //public static bool plyrfaction = false;
+    private FactionList fl;
 
-    
+
 
     //public GameObject TreePrefab;
 
@@ -43,6 +46,8 @@ public class Unit : NetworkBehaviour
     [Command]
     void CmdDestroyNetworkIdentity(NetworkInstanceId netId) {
         GameObject obj = NetworkServer.FindLocalObject(netId);
+        fl = unitlist.GetComponent<FactionList>();
+        fl.removeUnit(this);
         NetworkServer.Destroy(obj);
     }
 

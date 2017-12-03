@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class FactionList : MonoBehaviour
+public class FactionList : NetworkBehaviour
 {
     public static ArrayList CurrentUnitsB;
     public static ArrayList CurrentUnitsR;
     // Use this for initialization
+
+    public int alen;
+    public int blen;
+
     void Start()
     {
         CurrentUnitsB = new ArrayList();
@@ -14,14 +19,8 @@ public class FactionList : MonoBehaviour
         //InvokeRepeating("Update", 1f, 1f);
     }
 
-    // Update is called once per frame
-    void Update()
+    void checkWin()
     {
-        //yield return new WaitForSeconds(15.0f);
-        // Thread.Sleep(15000);
-
-        // System.Threading.Thread.Sleep(
-        //(int)System.TimeSpan.FromSeconds(15).TotalMilliseconds);
         Debug.Log("Checking??");
         if (CurrentUnitsB.Count <= 0)
         {
@@ -36,6 +35,23 @@ public class FactionList : MonoBehaviour
             //Faction red wins 
             Debug.Log("Blue Wins!!!");
         }
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!isServer)
+        {
+            return;
+        }
+        InvokeRepeating("checkWin", 15.0f, 15.0f);
+        //yield return new WaitForSeconds(15.0f);
+        // Thread.Sleep(15000);
+
+        // System.Threading.Thread.Sleep(
+        //(int)System.TimeSpan.FromSeconds(15).TotalMilliseconds);
+
     }
     public void addUnit(Unit newspawn)
     {
@@ -44,6 +60,9 @@ public class FactionList : MonoBehaviour
             CurrentUnitsR.Add(newspawn);
         }
         else CurrentUnitsB.Add(newspawn);
+        alen = CurrentUnitsR.Count;
+        blen = CurrentUnitsB.Count;
+        Debug.Log("alen " + alen + " blen" + blen);
     }
     public void removeUnit(Unit unt)
     {
@@ -52,6 +71,10 @@ public class FactionList : MonoBehaviour
             CurrentUnitsR.Remove(unt);
         }
         else CurrentUnitsB.Remove(unt);
+
+        alen = CurrentUnitsR.Count;
+        blen = CurrentUnitsB.Count;
     }
+
 }
 

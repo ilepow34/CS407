@@ -19,9 +19,13 @@ public class GameControl : NetworkBehaviour {
     public static bool plyrfaction = false;
     
 	private bool runOnce = false;
-	
+
+    GameObject unitlist;
+    //public static bool plyrfaction = false;
+    private FactionList fl;
+
     // position, team, etc things the server needs to know
-	[Command]
+    [Command]
 	void CmdSpawnInitBuilder(Vector3 position, Quaternion rotation, int connectionId, bool fact)
 	{
 
@@ -32,9 +36,11 @@ public class GameControl : NetworkBehaviour {
         builder.GetComponent<Unit>().faction = fact;
 		builder.GetComponent<Unit>().type = "SPAWNED FROM SERVER";
 		Debug.Log("Spawninbg shit: " + fact);
-
+        unitlist = GameObject.Find("mgrGame");
+        fl = unitlist.GetComponent<FactionList>();
+        fl.addUnit(builder.GetComponent<Unit>());
         // this then spawns it on clients and sets the owner properly
-		NetworkServer.SpawnWithClientAuthority(builder, NetworkServer.connections[connectionId]);
+        NetworkServer.SpawnWithClientAuthority(builder, NetworkServer.connections[connectionId]);
 	}
 
 	//Straight copied this from Nick's function
@@ -50,9 +56,11 @@ public class GameControl : NetworkBehaviour {
 		building.GetComponent<Unit>().faction = fact;
 		building.GetComponent<Unit>().type = "SPAWNED FROM SERVER2";
 		Debug.Log("Spawninbg2900090909090909090 shit: " + fact);
-
-		// this then spawns it on clients and sets the owner properly
-		NetworkServer.SpawnWithClientAuthority(building, NetworkServer.connections[connectionId]);
+        unitlist = GameObject.Find("mgrGame");
+        fl = unitlist.GetComponent<FactionList>();
+        fl.addUnit(building.GetComponent<Unit>());
+        // this then spawns it on clients and sets the owner properly
+        NetworkServer.SpawnWithClientAuthority(building, NetworkServer.connections[connectionId]);
 	}
 
 	//Changes the unit to be placed based

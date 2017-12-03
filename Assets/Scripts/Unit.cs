@@ -67,7 +67,6 @@ public class Unit : NetworkBehaviour
     void Start()
     {
         // for debugging
-        InvokeRepeating("decreaseHealth", 1.0f, 1.0f);
 
         //TextMesh tt = gameObject.AddComponent(TextMesh);
         //faction = GameControl.plyrfaction;

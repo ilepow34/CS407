@@ -39,27 +39,27 @@ public class GameControl : NetworkBehaviour {
 
 	//Straight copied this from Nick's function
 	[Command]
-	void CmdSpawnUnit(GameObject unit, Vector3 position, Quaternion rotation, int connectionId, bool fact)
+	void CmdSpawnBuilding(Vector3 position, Quaternion rotation, int connectionId, bool fact)
 	{
         Debug.Log("Running cmd spawn");
 
 		// instantiate object on server
-		GameObject builder = Instantiate(unit, position,rotation) as GameObject;
+		GameObject building = Instantiate(bldg, position,rotation) as GameObject;
 
 		// manipulate anything. this was just for testing to see if it syncd properties
-		builder.GetComponent<Unit>().faction = fact;
-		builder.GetComponent<Unit>().type = "SPAWNED FROM SERVER2";
+		building.GetComponent<Unit>().faction = fact;
+		building.GetComponent<Unit>().type = "SPAWNED FROM SERVER2";
 		Debug.Log("Spawninbg2900090909090909090 shit: " + fact);
 
 		// this then spawns it on clients and sets the owner properly
-		NetworkServer.SpawnWithClientAuthority(builder, NetworkServer.connections[connectionId]);
+		NetworkServer.SpawnWithClientAuthority(building, NetworkServer.connections[connectionId]);
 	}
 
 	//Changes the unit to be placed based
 	//Buttons in the GUI will cause different values to be passed to this
 	public void ChangeUnit(int n) {
 		GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
-		gameManager.unitToSpawn = n;
+		gameManager.unitToSpawn = (UnitEnum) n;
 	}
 
     // this is just a sleep timer essentially to allow both clients to load the game before begging to spawn units.
@@ -95,6 +95,8 @@ public class GameControl : NetworkBehaviour {
 		if (!runOnce) {			 
 			StartCoroutine(WaitForIt (3.0F)); 
 			runOnce = true;	
+			Debug.Log ((UnitEnum) 0);
+
 		}
 
 		//ray casting to find out where the ground is and what is moveable	
@@ -111,16 +113,15 @@ public class GameControl : NetworkBehaviour {
                 {
                     Debug.Log("build is pressed");
                     GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
-					if (gameManager.unitToSpawn == 0) {
-						unitToSpawn = bldg;
-					}
-					if (gameManager.unitToSpawn == 1) {
-						unitToSpawn = builderPrefab;
-					}
 					if (gameManager.money >= gameManager.unitCost)
                     {
+						if (gameManager.unitToSpawn == UnitEnum.Building) {
+							CmdSpawnBuilding(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+						}
+						if (gameManager.unitToSpawn == UnitEnum.Builder) {
+							CmdSpawnInitBuilder(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+						}
 						gameManager.money -= gameManager.unitCost;
-						CmdSpawnUnit(unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
                     }
                     else
                     {

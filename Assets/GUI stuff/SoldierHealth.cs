@@ -11,7 +11,7 @@ public class SoldierHealth : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		cur_health = max_health;
-		InvokeRepeating("decreasehealth", 10f, 10f);
+		//InvokeRepeating("decreasehealth", 10f, 10f);
 	}
 	
 	// Update is called once per frame

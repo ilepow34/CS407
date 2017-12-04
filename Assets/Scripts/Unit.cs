@@ -43,8 +43,11 @@ public class Unit : NetworkBehaviour
 
     }
 
-    [Command]
+	[Command]
     void CmdDestroyNetworkIdentity(NetworkInstanceId netId) {
+		if (!isServer) {
+			return;
+		}
         GameObject obj = NetworkServer.FindLocalObject(netId);
         fl = unitlist.GetComponent<FactionList>();
         fl.removeUnit(this);
@@ -56,6 +59,13 @@ public class Unit : NetworkBehaviour
         GameObject obj = NetworkServer.FindLocalObject(netId);
         Unit unit = obj.GetComponent<Unit>();
         unit.TreeHealth -= dmgToTake;
+		if (unit.TreeHealth <= 0) {
+			// probably fucking doesnt
+		//	CmdDestroyNetworkIdentity(netId);
+			
+			// actually works
+			NetworkServer.Destroy(obj);
+		}
     }
 
     void decreaseHealth() {
@@ -65,7 +75,7 @@ public class Unit : NetworkBehaviour
         NetworkIdentity networkIdentity = gameObject.GetComponent<NetworkIdentity>();
         CmdTakeDamage(networkIdentity.netId, 20);
         if (TreeHealth <= 0) {
-            CmdDestroyNetworkIdentity(networkIdentity.netId);
+            //DestroyNetworkIdentity(networkIdentity.netId);
         }
     }
 
@@ -165,7 +175,7 @@ public class Unit : NetworkBehaviour
     // Update is called once per frame
     public void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.tag);
+        Debug.Log(other.tag + "is other tag???");
         if (other.tag == "Unit")
         {
             Unit collunit = other.gameObject.GetComponentInParent<Unit>();
@@ -180,7 +190,9 @@ public class Unit : NetworkBehaviour
 
                     Debug.Log("HURTS");
 
-                    ApplyDamage(damage);
+                  //  ApplyDamage(damage);
+  				  CmdTakeDamage(collunit.GetComponent<NetworkIdentity>().netId, dmg);
+
                     //getdmg(damage);
                     logTimer += 5.0f;
 

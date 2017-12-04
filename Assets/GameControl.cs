@@ -20,6 +20,9 @@ public class GameControl : NetworkBehaviour {
     
 	private bool runOnce = false;
 
+	bool isSelecting = false;
+	Vector3 mousePosition1;
+
     GameObject unitlist;
     //public static bool plyrfaction = false;
     private FactionList fl;
@@ -106,6 +109,16 @@ public class GameControl : NetworkBehaviour {
 			Debug.Log ((UnitEnum) 0);
 
 		}
+
+		// If we press the left mouse button, save mouse location and begin selection
+		if( Input.GetMouseButtonDown( 0 ) )
+		{
+			isSelecting = true;
+			mousePosition1 = Input.mousePosition;
+		}
+		// If we let go of the left mouse button, end selection
+		if( Input.GetMouseButtonUp( 0 ) )
+			isSelecting = false;
 
 		//ray casting to find out where the ground is and what is moveable	
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -270,6 +283,17 @@ public class GameControl : NetworkBehaviour {
             Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.yellow);
 		}
 	}
+
+	void OnGUI()
+	{
+		if (isSelecting) {
+			// Create a rect from both mouse positions
+			var rect = RectSelection.GetScreenRect( mousePosition1, Input.mousePosition );
+			RectSelection.DrawScreenRect( rect, new Color( 0.8f, 0.8f, 0.95f, 0.25f ) );
+			RectSelection.DrawScreenRectBorder( rect, 2, new Color( 0.8f, 0.8f, 0.95f ) );
+		}
+	}
+
 	#region Helper functions
 	//Did User perform mouse click?
 	public bool DidUserClickLeftMouse(Vector3 hitPoint)

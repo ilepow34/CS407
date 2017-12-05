@@ -16,8 +16,8 @@ public class Unit : NetworkBehaviour
     public int range;
     int targetIndex;
     public int fact = 0;
+	private Unit triggeredUnit;
 
-    public TextMesh textMeshPrefab;
 
     GameObject unitlist;
     //public static bool plyrfaction = false;
@@ -34,11 +34,10 @@ public class Unit : NetworkBehaviour
     public float MaxHealth = 100.0f;
     private int damage = 0;
     public Transform Spawner;
-    TextMesh wallTxt;
+
     private void Update()
     {
-        wallTxt.transform.LookAt(Camera.main.transform.position);
-        wallTxt.transform.RotateAround(wallTxt.transform.position, wallTxt.transform.up, 180f);
+
 
 
     }
@@ -85,52 +84,10 @@ public class Unit : NetworkBehaviour
 
         //TextMesh tt = gameObject.AddComponent(TextMesh);
         //faction = GameControl.plyrfaction;
-        wallTxt = Instantiate(textMeshPrefab,Vector3.zero, Quaternion.identity);
-        wallTxt.transform.position = gameObject.transform.position;
-        wallTxt.transform.rotation = gameObject.transform.rotation;
-        wallTxt.transform.SetParent(gameObject.transform);
+
         //wallTxt.transform.LookAt(Camera.main.transform.position, Vector3.right);
-        range = 15;
-        dmg = 10;
-        if (type.Equals("builder"))
-        {
-            TreeHealth = 50;
-            range = 10;
-            dmg = 5;
-        }
-        else if (type.Equals("barracks"))
-        {
-            dmg = 0;
-            TreeHealth = 300;
-            range = 10;
-        }
-        else if (type.Equals("turret"))
-        {
-            TreeHealth = 250;
-            range = 10;
-            dmg = 20;
-        }
-        else if (type.Equals("soldier"))
-        {
-            TreeHealth = 100;
-            dmg = 10;
-        }
-        else if (type.Equals("heavy"))
-        {
-            TreeHealth = 150;
-            dmg = 15;
-        }
-        else if (type.Equals("tank"))
-        {
-            TreeHealth = 500;
-            dmg = 20;
-        }
-        else if (type.Equals("commando"))
-        {
-            TreeHealth = 250;
-            range = 20;
-            dmg = 20;
-        }
+
+  
         if (faction)
         {
             gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
@@ -138,13 +95,11 @@ public class Unit : NetworkBehaviour
 
         }
         MaxHealth = TreeHealth;
-        wallTxt.text = "" + TreeHealth;
     }
     //applying damage to tree
     public void ApplyDamage(float damage)
     {
         TreeHealth -= damage;
-        wallTxt.text = "" + TreeHealth;
         if (TreeHealth <= 0.0) { Destroy(this.gameObject); }
 
     }
@@ -161,6 +116,9 @@ public class Unit : NetworkBehaviour
             // bool temp = collunit.faction;
             if (collunit.faction != faction)
             {
+				if(triggeredUnit == null){
+					triggeredUnit = collunit;
+				}
                 damage = collunit.dmg;
                 Debug.Log("heyhey");
             }
@@ -171,6 +129,15 @@ public class Unit : NetworkBehaviour
         if (type.Equals("barracks"))
             logTimer = 15.0f;
     }
+	
+	void OnTriggerExit(Collider other){
+		if(other.tag == "Unit"){
+			Unit collunit = other.gameObject.GetComponentInParent<Unit>();
+			if(collunit == triggeredUnit){
+				triggeredUnit = null;
+			}
+		}
+	}
 
     // Update is called once per frame
     public void OnTriggerStay(Collider other)
@@ -184,19 +151,26 @@ public class Unit : NetworkBehaviour
             Debug.Log("I am " + gameObject.name + " My Faction is " + fact);
             if (collunit.faction != faction)
             {
-                logTimer -= Time.deltaTime;
-                if (logTimer <= 0.0f)
-                {
+				if(triggeredUnit == null){
+					triggeredUnit = collunit;
+				}
+				if(collunit == triggeredUnit){
+					logTimer -= Time.deltaTime;
+					if (logTimer <= 0.0f)
+					{
 
-                    Debug.Log("HURTS");
+						Debug.Log("HURTS");
 
-                  //  ApplyDamage(damage);
-  				  CmdTakeDamage(collunit.GetComponent<NetworkIdentity>().netId, dmg);
+					//  ApplyDamage(damage);
+					CmdTakeDamage(collunit.GetComponent<NetworkIdentity>().netId, dmg);
 
-                    //getdmg(damage);
-                    logTimer += 5.0f;
-
-                }
+						//getdmg(damage);
+						logTimer += 5.0f;
+					}
+				}
+                else{
+					Debug.Log("Not triggered Unit");
+				}
             }
 
             else if (collunit.faction == faction && type.Equals("barracks"))

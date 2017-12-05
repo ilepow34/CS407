@@ -27,7 +27,9 @@ public class GameControl : NetworkBehaviour {
     //public static bool plyrfaction = false;
     private FactionList fl;
 
+
     // position, team, etc things the server needs to know
+	/*
     [Command]
 	void CmdSpawnInitBuilder(Vector3 position, Quaternion rotation, int connectionId, bool fact)
 	{
@@ -65,6 +67,39 @@ public class GameControl : NetworkBehaviour {
         // this then spawns it on clients and sets the owner properly
         NetworkServer.SpawnWithClientAuthority(building, NetworkServer.connections[connectionId]);
 	}
+	*/
+
+	//Refactored this shit so we don't have multiple copies
+	// position, team, etc things the server needs to know
+	[Command]
+	void CmdSpawnUnit(UnitEnum uEnum, Vector3 position, Quaternion rotation, int connectionId, bool fact)
+	{
+		Debug.Log("Running cmd spawn");
+		GameObject go = null;
+
+		//instantiate object on server
+		if (uEnum == UnitEnum.Builder) {
+			go = Instantiate(builderPrefab, position,rotation) as GameObject;
+		}
+		if (uEnum == UnitEnum.Building) {
+			go = Instantiate(bldg, position,rotation) as GameObject;
+		}
+
+		if (go == null) {
+			Debug.Log ("Something broke in cmd spawn");
+			return;
+		}
+
+		// manipulate anything. this was just for testing to see if it syncd properties
+		go.GetComponent<Unit>().faction = fact;
+		go.GetComponent<Unit>().type = "SPAWNED FROM SERVER2";
+		Debug.Log("Spawninbg2900090909090909090 shit: " + fact);
+		unitlist = GameObject.Find("mgrGame");
+		fl = unitlist.GetComponent<FactionList>();
+		fl.addUnit(go.GetComponent<Unit>());
+		// this then spawns it on clients and sets the owner properly
+		NetworkServer.SpawnWithClientAuthority(go, NetworkServer.connections[connectionId]);
+	}
 
 	//Changes the unit to be placed based
 	//Buttons in the GUI will cause different values to be passed to this
@@ -85,7 +120,7 @@ public class GameControl : NetworkBehaviour {
     
 			 
 				Debug.Log("Calling shit?");
-				CmdSpawnInitBuilder(new Vector3( plyrfaction ? 0.0f : 0.0f, 0.0f, 0.0f),
+		CmdSpawnUnit(UnitEnum.Builder, new Vector3( plyrfaction ? 0.0f : 0.0f, 0.0f, 0.0f),
 							Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
 				
 	//SceneManager.LoadScene("Game");
@@ -106,8 +141,6 @@ public class GameControl : NetworkBehaviour {
 		if (!runOnce) {			 
 			StartCoroutine(WaitForIt (3.0F)); 
 			runOnce = true;	
-			Debug.Log ((UnitEnum) 0);
-
 		}
 
 		// If we press the left mouse button, save mouse location and begin selection
@@ -123,7 +156,7 @@ public class GameControl : NetworkBehaviour {
 		//ray casting to find out where the ground is and what is moveable	
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			
-			if(Physics.Raycast(ray, out hit, Mathf.Infinity)){
+		if(Physics.Raycast(ray, out hit, Mathf.Infinity)){
 			// store point at mouse button down
 			if(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2)|| Input.GetMouseButtonDown(1)) mouseDownPoint = hit.point;
 
@@ -136,12 +169,15 @@ public class GameControl : NetworkBehaviour {
                     GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
 					if (gameManager.money >= gameManager.unitCost)
                     {
+						CmdSpawnUnit(gameManager.unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+						/*
 						if (gameManager.unitToSpawn == UnitEnum.Building) {
 							CmdSpawnBuilding(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
 						}
 						if (gameManager.unitToSpawn == UnitEnum.Builder) {
 							CmdSpawnInitBuilder(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
 						}
+						*/
 						gameManager.money -= gameManager.unitCost;
                     }
                     else
@@ -165,52 +201,7 @@ public class GameControl : NetworkBehaviour {
                 }
                 if (Input.GetMouseButtonDown(0)) DeselectGameObjectsIfSelected();
             }// end of Ground
-             /*else if(hit.transform.tag == "Bldg"){
-                 if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
-                 {
-                     // is the user hitting the unit? ie. something selectable
-                     if (hit.collider.transform.Find("Selected"))
-                     {
-
-                         // found a selectable unit
-                         Debug.Log("HIT: "+CurrentlySelectedUnits.Count);
-
-                         // if the shiftkey is NOT down, remove all the units
-                         if (!ShiftKeysDown ()) {
-                             Debug.Log ("shift isnt down");
-                             DeselectGameObjectsIfSelected();
-                         }
-                         if (CurrentlySelectedUnits.Count >= 0)
-                         {
-                             CurrentlySelectedUnits.Add(hit.transform.gameObject);
-                             GameObject selectedObj = hit.collider.transform.Find("Selected").gameObject;
-                             selectedObj.SetActive(true);
-                         }
-
-
-                         // are we selecting a different object?
-                         else if (UnitAlreadyInCurrentlySelectedUnits(hit.collider.gameObject))
-                         {
-                             GameObject selectedObj = hit.collider.transform.Find("Selected").gameObject;
-                             selectedObj.SetActive(true);
-
-                             // add unit to the currently selected units
-                             CurrentlySelectedUnits.Add(hit.collider.gameObject);
-                         }
-                         else // what if the unit is already in the currently selected units
-                         {
-                             // we need to remove the unit
-                             RemoveUnitFromCurrentlySelectedUnits(hit.collider.gameObject);
-                         }
-                     }
-                     else // if this object is not selectable
-                     {
-                         if (!ShiftKeysDown())
-                             DeselectGameObjectsIfSelected(); 
-                     }
-                 }
-
-             }*/
+             
             else if (hit.transform.tag == "Unit" || hit.transform.tag == "Bldg")
             {
                 if (hit.transform.tag == "Bldg")
@@ -292,6 +283,19 @@ public class GameControl : NetworkBehaviour {
 			RectSelection.DrawScreenRect( rect, new Color( 0.8f, 0.8f, 0.95f, 0.25f ) );
 			RectSelection.DrawScreenRectBorder( rect, 2, new Color( 0.8f, 0.8f, 0.95f ) );
 		}
+	}
+
+	//Checks if a unit is within the selection box
+	public bool IsWithinSelectionBounds( GameObject gameObject )
+	{
+		if( !isSelecting )
+			return false;
+
+		var camera = Camera.main;
+		var viewportBounds = RectSelection.GetViewportBounds( camera, mousePosition1, Input.mousePosition );
+
+		return viewportBounds.Contains(
+			camera.WorldToViewportPoint( gameObject.transform.position ) );
 	}
 
 	#region Helper functions

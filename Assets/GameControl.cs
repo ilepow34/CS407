@@ -15,7 +15,9 @@ public class GameControl : NetworkBehaviour {
 	public GameObject bldg;
 	public GameObject builderPrefab;
 	public GameObject unitToSpawn;
-	
+    public GameObject[] gos;
+   // public GameObject[] spsB;
+  //  public GameObject[] spsR;
     public static bool plyrfaction = false;
     
 	private bool runOnce = false;
@@ -100,10 +102,37 @@ public class GameControl : NetworkBehaviour {
 		// this then spawns it on clients and sets the owner properly
 		NetworkServer.SpawnWithClientAuthority(go, NetworkServer.connections[connectionId]);
 	}
+    [Command]
+    void CmdSpawnUnitGo(GameObject gg, Vector3 position, Quaternion rotation, int connectionId, bool fact)
+    {
+        Debug.Log("Running cmd spawn");
+        GameObject go = null;
 
-	//Changes the unit to be placed based
-	//Buttons in the GUI will cause different values to be passed to this
-	public void ChangeUnit(int n) {
+        //instantiate object on server
+
+            go = Instantiate(gg, position, rotation) as GameObject;
+    
+
+        if (go == null)
+        {
+            Debug.Log("Something broke in cmd spawn");
+            return;
+        }
+
+        // manipulate anything. this was just for testing to see if it syncd properties
+        go.GetComponent<Unit>().faction = fact;
+        go.GetComponent<Unit>().type = "SPAWNED FROM SERVER2";
+        Debug.Log("Spawninbg2900090909090909090 shit: " + fact);
+        unitlist = GameObject.Find("mgrGame");
+        fl = unitlist.GetComponent<FactionList>();
+        fl.addUnit(go.GetComponent<Unit>());
+        // this then spawns it on clients and sets the owner properly
+        NetworkServer.SpawnWithClientAuthority(go, NetworkServer.connections[connectionId]);
+    }
+
+    //Changes the unit to be placed based
+    //Buttons in the GUI will cause different values to be passed to this
+    public void ChangeUnit(int n) {
 		GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
 		gameManager.unitToSpawn = (UnitEnum) n;
 	}
@@ -114,17 +143,27 @@ public class GameControl : NetworkBehaviour {
     // calls a command that then runs on server
     // ALL commands run on server always
     // so we pass any information the server needs through the command parameters
-	IEnumerator WaitForIt(float waitTime)
-{
-    yield return new WaitForSeconds(waitTime);
-    
-			 
-				Debug.Log("Calling shit?");
-		CmdSpawnUnit(UnitEnum.Builder, new Vector3( plyrfaction ? 0.0f : 0.0f, 0.0f, 0.0f),
-							Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+    IEnumerator WaitForIt(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+
+        Debug.Log("Calling shit?");
+        CmdSpawnUnit(UnitEnum.Builder, new Vector3(plyrfaction ? 0.0f : 0.0f, 0.0f, 0.0f),
+                            Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+
+        for (int i = 0; i < gos.Length; i++)
+        {
+            Vector3 vct = plyrfaction ? new Vector3(-50.0f * i, 0.0f, 100.0f) : new Vector3(-50.0f * i, 0.0f, -100.0f);
+            CmdSpawnUnitGo(gos[i], vct,
+                           Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+
+
+        }
+    }
 				
 	//SceneManager.LoadScene("Game");
-}
+
 	
 	void Awake()
 	{

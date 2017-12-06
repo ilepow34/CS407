@@ -146,13 +146,14 @@ public class GameControl : NetworkBehaviour {
 		// If we press the left mouse button, save mouse location and begin selection
 		if( Input.GetMouseButtonDown( 0 ) )
 		{
+			DeselectGameObjectsIfSelected ();
 			isSelecting = true;
 			mousePosition1 = Input.mousePosition;
 		}
 		// If we let go of the left mouse button, end selection
-		if( Input.GetMouseButtonUp( 0 ) )
+		if (Input.GetMouseButtonUp (0)) {
 			isSelecting = false;
-
+		}
 		//ray casting to find out where the ground is and what is moveable	
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			
@@ -194,12 +195,11 @@ public class GameControl : NetworkBehaviour {
                     for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
                     {
                         Debug.Log("move");
+						Debug.Log (CurrentlySelectedUnits.Count);
                         Unit unit = ((GameObject)CurrentlySelectedUnits[i]).GetComponent<Unit>();
                         unit.NavMeshMoveUnit(Target.transform);
                     }
-
                 }
-                if (Input.GetMouseButtonDown(0)) DeselectGameObjectsIfSelected();
             }// end of Ground
              
             else if (hit.transform.tag == "Unit" || hit.transform.tag == "Bldg")
@@ -217,34 +217,9 @@ public class GameControl : NetworkBehaviour {
                         Unit collunit = hit.collider.GetComponentInParent<Unit>();
                         if (collunit.getFaction() == plyrfaction)
                         {
-                            // if the shiftkey is NOT down, remove all the units
-                            if (!ShiftKeysDown())
-                            {
-                                Debug.Log("shift isnt down");
-                                DeselectGameObjectsIfSelected();
-                            }
-                            if (CurrentlySelectedUnits.Count >= 0)
-                            {
-                                CurrentlySelectedUnits.Add(hit.transform.gameObject);
-                                GameObject selectedObj = hit.collider.transform.Find("Selected").gameObject;
-                                selectedObj.SetActive(true);
-                            }
-
-
-                            // are we selecting a different object?
-                            else if (UnitAlreadyInCurrentlySelectedUnits(hit.collider.gameObject))
-                            {
-                                GameObject selectedObj = hit.collider.transform.Find("Selected").gameObject;
-                                selectedObj.SetActive(true);
-
-                                // add unit to the currently selected units
-                                CurrentlySelectedUnits.Add(hit.collider.gameObject);
-                            }
-                            else // what if the unit is already in the currently selected units
-                            {
-                                // we need to remove the unit
-                                RemoveUnitFromCurrentlySelectedUnits(hit.collider.gameObject);
-                            }
+                            CurrentlySelectedUnits.Add(hit.transform.gameObject);
+                            GameObject selectedObj = hit.collider.transform.Find("Selected").gameObject;
+                            selectedObj.SetActive(true);
                         }
                         else
                         {
@@ -266,8 +241,7 @@ public class GameControl : NetworkBehaviour {
                     }
                     else // if this object is not selectable
                     {
-                        if (!ShiftKeysDown())
-                            DeselectGameObjectsIfSelected();
+                        DeselectGameObjectsIfSelected();
                     }
                 }
             }
@@ -282,6 +256,19 @@ public class GameControl : NetworkBehaviour {
 			var rect = RectSelection.GetScreenRect( mousePosition1, Input.mousePosition );
 			RectSelection.DrawScreenRect( rect, new Color( 0.8f, 0.8f, 0.95f, 0.25f ) );
 			RectSelection.DrawScreenRectBorder( rect, 2, new Color( 0.8f, 0.8f, 0.95f ) );
+			GameObject[] units = GameObject.FindGameObjectsWithTag ("Unit");
+			if (units != null) {
+				foreach (GameObject go in units) {
+					if (IsWithinSelectionBounds (go) && go.GetComponent<Unit> ().faction == plyrfaction) {
+						if (!CurrentlySelectedUnits.Contains (go)) {
+							Debug.Log ("Adding unit to list");
+							CurrentlySelectedUnits.Add (go);
+							go.transform.Find("Selected").gameObject.SetActive(true);
+						}
+						Debug.Log ("Unit found");
+					}
+				}
+			}
 		}
 	}
 

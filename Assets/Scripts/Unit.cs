@@ -35,6 +35,9 @@ public class Unit : NetworkBehaviour
     private int damage = 0;
     public Transform Spawner;
 
+
+    public float spawnTime;
+
     private void Update()
     {
 
@@ -86,6 +89,7 @@ public class Unit : NetworkBehaviour
 
     void Start()
     {
+	spawnTime = Time.timeSinceLevelLoad;
         // for debugging
 
         //TextMesh tt = gameObject.AddComponent(TextMesh);
@@ -117,10 +121,25 @@ public class Unit : NetworkBehaviour
     // Use this for initialization
     void OnTriggerEnter(Collider other)
     {
+
         if (other.tag == "Unit")
         {
+
             Unit collunit = other.gameObject.GetComponentInParent<Unit>();
-            // bool temp = collunit.faction;
+
+	    if (type.Equals("barracks") && type.Equals(collunit.type)) {
+		GameObject toDelete = (spawnTime < collunit.spawnTime) ? collunit.gameObject : gameObject;
+
+        	NetworkIdentity networkIdentity = toDelete.GetComponent<NetworkIdentity>();
+		CmdDestroyNetworkIdentity(toDelete.GetComponent<NetworkIdentity>().netId);
+
+		// TODO: give the player that lost the barracks their money back?
+
+ 	        Debug.Log("delete one of the units.");
+		return;
+            }
+		    
+	    // bool temp = collunit.faction;
             if (collunit.faction != faction)
             {
 				if(triggeredUnit == null){
@@ -169,7 +188,7 @@ public class Unit : NetworkBehaviour
 						Debug.Log("HURTS");
 
 					//  ApplyDamage(damage);
-					CmdTakeDamage(collunit.GetComponent<NetworkIdentity>().netId, dmg);
+						CmdTakeDamage(collunit.GetComponent<NetworkIdentity>().netId, dmg);
 
 						//getdmg(damage);
 						logTimer += 5.0f;

@@ -94,8 +94,6 @@ public class GameControl : NetworkBehaviour {
 
 		// manipulate anything. this was just for testing to see if it syncd properties
 		go.GetComponent<Unit>().faction = fact;
-		go.GetComponent<Unit>().type = "SPAWNED FROM SERVER2";
-		Debug.Log("Spawninbg2900090909090909090 shit: " + fact);
 		unitlist = GameObject.Find("mgrGame");
 		fl = unitlist.GetComponent<FactionList>();
 		fl.addUnit(go.GetComponent<Unit>());

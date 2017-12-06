@@ -259,7 +259,7 @@ public class GameControl : NetworkBehaviour {
 			GameObject[] units = GameObject.FindGameObjectsWithTag ("Unit");
 			if (units != null) {
 				foreach (GameObject go in units) {
-					if (IsWithinSelectionBounds (go) && go.GetComponent<Unit> ().faction == plyrfaction) {
+					if (IsWithinSelectionBounds (go) && go.GetComponent<Unit>() != null && go.GetComponent<Unit> ().faction == plyrfaction) {
 						if (!CurrentlySelectedUnits.Contains (go)) {
 							Debug.Log ("Adding unit to list");
 							CurrentlySelectedUnits.Add (go);

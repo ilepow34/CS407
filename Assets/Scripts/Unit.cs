@@ -56,15 +56,21 @@ public class Unit : NetworkBehaviour
     [Command]
     void CmdTakeDamage(NetworkInstanceId netId, int dmgToTake) {
         GameObject obj = NetworkServer.FindLocalObject(netId);
-        Unit unit = obj.GetComponent<Unit>();
-        unit.TreeHealth -= dmgToTake;
-		if (unit.TreeHealth <= 0) {
-			// probably fucking doesnt
-		//	CmdDestroyNetworkIdentity(netId);
-			
-			// actually works
-			NetworkServer.Destroy(obj);
-		}
+        if (obj != null)
+        {
+            Unit unit = obj.GetComponent<Unit>();
+            unit.TreeHealth -= dmgToTake;
+            if (unit.TreeHealth <= 0)
+            {
+                // probably fucking doesnt
+                //	CmdDestroyNetworkIdentity(netId);
+                Debug.Log("removing RIP");
+                fl = unitlist.GetComponent<FactionList>();
+                fl.removeUnit(this);
+                // actually works
+                NetworkServer.Destroy(obj);
+            }
+        }
     }
 
     void decreaseHealth() {
@@ -95,6 +101,7 @@ public class Unit : NetworkBehaviour
 
         }
         MaxHealth = TreeHealth;
+        unitlist = GameObject.Find("mgrGame");
     }
     //applying damage to tree
     public void ApplyDamage(float damage)
@@ -142,13 +149,13 @@ public class Unit : NetworkBehaviour
     // Update is called once per frame
     public void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.tag + "is other tag???");
+       // Debug.Log(other.tag + "is other tag???");
         if (other.tag == "Unit")
         {
             Unit collunit = other.gameObject.GetComponentInParent<Unit>();
 
-            Debug.Log("Enemy name is" + collunit.name + " Enemy Faction is " + collunit.fact);
-            Debug.Log("I am " + gameObject.name + " My Faction is " + fact);
+           // Debug.Log("Enemy name is" + collunit.name + " Enemy Faction is " + collunit.fact);
+           // Debug.Log("I am " + gameObject.name + " My Faction is " + fact);
             if (collunit.faction != faction)
             {
 				if(triggeredUnit == null){

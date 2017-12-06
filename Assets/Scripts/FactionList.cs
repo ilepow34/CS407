@@ -21,7 +21,7 @@ public class FactionList : NetworkBehaviour
 
     void checkWin()
     {
-        Debug.Log("Checking??");
+        Debug.Log("Checkingisit?? " + "alen " + alen + " blen" + blen);
         if (CurrentUnitsB.Count <= 0)
         {
             // Time.timeScale = 0.1f;
@@ -66,14 +66,24 @@ public class FactionList : NetworkBehaviour
     }
     public void removeUnit(Unit unt)
     {
+
+        Debug.Log(unt.type);
         if (unt.faction)
         {
+            Debug.Log("REM FROM RED");
             CurrentUnitsR.Remove(unt);
         }
-        else CurrentUnitsB.Remove(unt);
+        else
+        {
+            Debug.Log("REM FROM BLU");
+            CurrentUnitsB.Remove(unt);
+        }
 
         alen = CurrentUnitsR.Count;
         blen = CurrentUnitsB.Count;
+        Debug.Log("REM:alen " + alen + " blen" + blen);
+
+      
     }
 
 }

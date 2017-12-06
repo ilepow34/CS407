@@ -266,6 +266,9 @@ public class GameControl : NetworkBehaviour {
 							go.transform.Find("Selected").gameObject.SetActive(true);
 						}
 						Debug.Log ("Unit found");
+					} else if (UnitAlreadyInCurrentlySelectedUnits(go)) {
+						RemoveUnitFromCurrentlySelectedUnits(go);
+						// deselect?
 					}
 				}
 			}

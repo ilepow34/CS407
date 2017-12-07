@@ -108,7 +108,7 @@ public class GameControl : NetworkBehaviour {
 		go.GetComponent<Unit>().faction = fact;
 		unitlist = GameObject.Find("mgrGame");
 		fl = unitlist.GetComponent<FactionList>();
-		fl.addUnit(go.GetComponent<Unit>());
+		fl.AddUnit(go.GetComponent<Unit>());
 		// this then spawns it on clients and sets the owner properly
 		NetworkServer.SpawnWithClientAuthority(go, NetworkServer.connections[connectionId]);
 	}
@@ -135,7 +135,7 @@ public class GameControl : NetworkBehaviour {
         Debug.Log("Spawninbg2900090909090909090 shit: " + fact);
         unitlist = GameObject.Find("mgrGame");
         fl = unitlist.GetComponent<FactionList>();
-        fl.addUnit(go.GetComponent<Unit>());
+        fl.AddUnit(go.GetComponent<Unit>());
         // this then spawns it on clients and sets the owner properly
         NetworkServer.SpawnWithClientAuthority(go, NetworkServer.connections[connectionId]);
     }

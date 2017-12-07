@@ -52,7 +52,13 @@ public class Unit : NetworkBehaviour
 		}
         GameObject obj = NetworkServer.FindLocalObject(netId);
         fl = unitlist.GetComponent<FactionList>();
-        fl.removeUnit(this);
+        if (!isServer)
+        {
+            fl.RpcRemoveUnit(this);
+        }
+        else
+            fl.RemoveUnit(this);
+
         NetworkServer.Destroy(obj);
     }
 
@@ -69,7 +75,13 @@ public class Unit : NetworkBehaviour
                 //	CmdDestroyNetworkIdentity(netId);
                 Debug.Log("removing RIP");
                 fl = unitlist.GetComponent<FactionList>();
-                fl.removeUnit(this);
+                if (!isServer)
+                {
+                    fl.RpcRemoveUnit(this);
+                }
+                else
+                fl.RemoveUnit(this);
+
                 // actually works
                 NetworkServer.Destroy(obj);
             }

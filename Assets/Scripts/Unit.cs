@@ -34,10 +34,10 @@ public class Unit : NetworkBehaviour
     public float MaxHealth = 100.0f;
     private int damage = 0;
     public Transform Spawner;
-
+	public float cost;
 
     public float spawnTime;
-
+	
     private void Update()
     {
 

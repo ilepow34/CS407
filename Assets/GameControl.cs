@@ -19,6 +19,7 @@ public class GameControl : NetworkBehaviour {
 	public GameObject defenseTowerPrefab;
 	public GameObject unitToSpawn;
     public GameObject[] gos;
+	int[] costs = { 10, 20, 50, 30, 50 }; //good god this is a horrible hack
    // public GameObject[] spsB;
   //  public GameObject[] spsR;
     public static bool plyrfaction = false;
@@ -142,9 +143,10 @@ public class GameControl : NetworkBehaviour {
 
     //Changes the unit to be placed based
     //Buttons in the GUI will cause different values to be passed to this
-    public void ChangeUnit(int n) {
+	public void ChangeUnit(int unit) {
 		GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
-		gameManager.unitToSpawn = (UnitEnum) n;
+		gameManager.unitToSpawn = (UnitEnum) unit;
+		gameManager.unitCost = costs[unit];
 	}
 
     // this is just a sleep timer essentially to allow both clients to load the game before begging to spawn units.

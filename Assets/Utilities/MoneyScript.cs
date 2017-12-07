@@ -12,7 +12,9 @@ public class MoneyScript : MonoBehaviour {
 	public Text moneyText;
 	// Use this for initialization
 	void Start () {
-		moneyTimer = 30.0f;
+		GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
+		gameManager.money = 100; 
+		moneyTimer = 10.0f;
 		timerInterval = 10.0f;
 		intervalAmount = 50;
 	}

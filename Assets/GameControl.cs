@@ -82,7 +82,7 @@ public class GameControl : NetworkBehaviour {
 	{
 		Debug.Log("Running cmd spawn");
 		GameObject go = null;
-
+		
 		//instantiate object on server
 		if (uEnum == UnitEnum.Builder) {
 			go = Instantiate(builderPrefab, position,rotation) as GameObject;
@@ -212,31 +212,35 @@ public class GameControl : NetworkBehaviour {
 			// store point at mouse button down
 			if(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2)|| Input.GetMouseButtonDown(1)) mouseDownPoint = hit.point;
 
+				if(hit.collider.tag == "UnitCreation"){
+					Debug.Log("It hit Unit Creation tag");
+					if (Input.GetMouseButtonDown(2))
+					{
+						Debug.Log("build is pressed");
+						GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
+						if (gameManager.money >= gameManager.unitCost)
+						{
+							CmdSpawnUnit(gameManager.unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+							/*
+							if (gameManager.unitToSpawn == UnitEnum.Building) {
+								CmdSpawnBuilding(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+							}
+							if (gameManager.unitToSpawn == UnitEnum.Builder) {
+								CmdSpawnInitBuilder(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+							}
+							*/
+							gameManager.money -= gameManager.unitCost;
+						}
+						else
+						{
+							Debug.Log("Not enough money");
+						}
+					}
+				}
             if (hit.transform.tag == "Ground")
             {
 				//Unit/building spawning
-                if (Input.GetMouseButtonDown(2))
-                {
-                    Debug.Log("build is pressed");
-                    GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
-					if (gameManager.money >= gameManager.unitCost)
-                    {
-						CmdSpawnUnit(gameManager.unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
-						/*
-						if (gameManager.unitToSpawn == UnitEnum.Building) {
-							CmdSpawnBuilding(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
-						}
-						if (gameManager.unitToSpawn == UnitEnum.Builder) {
-							CmdSpawnInitBuilder(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
-						}
-						*/
-						gameManager.money -= gameManager.unitCost;
-                    }
-                    else
-                    {
-                        Debug.Log("Not enough money");
-                    }
-                }
+               
 
 
                 if (Input.GetMouseButtonDown(1))

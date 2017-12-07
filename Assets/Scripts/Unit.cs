@@ -216,9 +216,10 @@ public class Unit : NetworkBehaviour
                         if (gameManager.money >= 20)
                         {
                             gameManager.money -= 20;
-
-                            GameObject gameObject = (GameObject)Instantiate(other.transform.parent.gameObject, Spawner.position, Spawner.rotation);
-                            gameObject.GetComponent<Rigidbody>().AddForce(xforce, 0.0f, zforce);
+							if (other.transform != null && other.transform.parent != null && other.transform.parent.gameObject != null && Spawner != null){
+                           		GameObject gameObject = (GameObject)Instantiate(other.transform.parent.gameObject, Spawner.position, Spawner.rotation);
+                            	gameObject.GetComponent<Rigidbody>().AddForce(xforce, 0.0f, zforce);
+							}
                         }
                         else
                         {

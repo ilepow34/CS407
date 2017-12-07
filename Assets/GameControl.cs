@@ -407,7 +407,12 @@ public class GameControl : NetworkBehaviour {
 				if (arrayListUnit == unit)
 				{
 					CurrentlySelectedUnits.RemoveAt(i);
-					arrayListUnit.transform.Find("Selected").gameObject.SetActive(false);
+					if (arrayListUnit.transform != null) {
+						if (arrayListUnit.transform.Find ("Selected") != null) {
+							if (arrayListUnit.transform.Find ("Selected").gameObject != null)
+								arrayListUnit.transform.Find ("Selected").gameObject.SetActive (false);
+						}
+					}
 				}
 			}
 			return;

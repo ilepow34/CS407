@@ -108,9 +108,9 @@ public class GameControl : NetworkBehaviour {
 		go.GetComponent<Unit>().faction = fact;
 		unitlist = GameObject.Find("mgrGame");
 		fl = unitlist.GetComponent<FactionList>();
-		fl.AddUnit(go.GetComponent<Unit>());
 		// this then spawns it on clients and sets the owner properly
 		NetworkServer.SpawnWithClientAuthority(go, NetworkServer.connections[connectionId]);
+		fl.AddUnit(go.GetComponent<Unit>().GetComponentInParent<NetworkIdentity>().netId);
 	}
     [Command]
     void CmdSpawnUnitGo(GameObject gg, Vector3 position, Quaternion rotation, int connectionId, bool fact)
@@ -135,9 +135,9 @@ public class GameControl : NetworkBehaviour {
         Debug.Log("Spawninbg2900090909090909090 shit: " + fact);
         unitlist = GameObject.Find("mgrGame");
         fl = unitlist.GetComponent<FactionList>();
-        fl.AddUnit(go.GetComponent<Unit>());
         // this then spawns it on clients and sets the owner properly
         NetworkServer.SpawnWithClientAuthority(go, NetworkServer.connections[connectionId]);
+        fl.AddUnit(go.GetComponent<Unit>().GetComponentInParent<NetworkIdentity>().netId);
     }
 
     //Changes the unit to be placed based

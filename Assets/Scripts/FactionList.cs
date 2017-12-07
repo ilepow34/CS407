@@ -5,10 +5,8 @@ using UnityEngine.Networking;
 
 public class FactionList : NetworkBehaviour
 {
-    [SyncVar]
-    public static ArrayList CurrentUnitsB;
-    [SyncVar]
-    public static ArrayList CurrentUnitsR;
+    public ArrayList CurrentUnitsB;
+    public ArrayList CurrentUnitsR;
     // Use this for initialization
 
     [SyncVar]
@@ -64,8 +62,9 @@ public class FactionList : NetworkBehaviour
 
     }
     //[Command]
-    public void AddUnit(Unit newspawn)
+    public void AddUnit(NetworkInstanceId netId)
     {
+	Unit newspawn = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
         if (newspawn.faction)
         {
             CurrentUnitsR.Add(newspawn);
@@ -77,8 +76,9 @@ public class FactionList : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcAddUnit(Unit newspawn)
+    public void RpcAddUnit(NetworkInstanceId netId)
     {
+	Unit newspawn = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
         if (newspawn.faction)
         {
             CurrentUnitsR.Add(newspawn);
@@ -89,8 +89,9 @@ public class FactionList : NetworkBehaviour
         Debug.Log("alen " + alen + " blen" + blen);
     }
     [ClientRpc]
-    public void RpcRemoveUnit(Unit unt)
+    public void RpcRemoveUnit(NetworkInstanceId netId)
     {
+	Unit unt = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
 
         Debug.Log(unt.type);
         if (unt.faction)
@@ -111,8 +112,10 @@ public class FactionList : NetworkBehaviour
 
     }
    // [Command]
-    public void RemoveUnit(Unit unt)
+    public void RemoveUnit(NetworkInstanceId netId)
     {
+	Unit unt = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
+
 
         Debug.Log(unt.type);
         if (unt.faction)

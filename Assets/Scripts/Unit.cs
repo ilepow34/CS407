@@ -54,10 +54,10 @@ public class Unit : NetworkBehaviour
         fl = unitlist.GetComponent<FactionList>();
         if (!isServer)
         {
-            fl.RpcRemoveUnit(this);
+            fl.RpcRemoveUnit(this.GetComponentInParent<NetworkIdentity>().netId);
         }
         else
-            fl.RemoveUnit(this);
+            fl.RemoveUnit(this.GetComponentInParent<NetworkIdentity>().netId);
 
         NetworkServer.Destroy(obj);
     }
@@ -77,10 +77,10 @@ public class Unit : NetworkBehaviour
                 fl = unitlist.GetComponent<FactionList>();
                 if (!isServer)
                 {
-                    fl.RpcRemoveUnit(this);
+                    fl.RpcRemoveUnit(netId);
                 }
                 else
-                fl.RemoveUnit(this);
+                fl.RemoveUnit(netId);
 
                 // actually works
                 NetworkServer.Destroy(obj);

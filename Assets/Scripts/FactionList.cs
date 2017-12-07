@@ -6,30 +6,39 @@ using UnityEngine.Networking;
 public class FactionList : NetworkBehaviour
 {
     public static ArrayList CurrentUnitsB;
-    public static ArrayList CurrentUnitsR;
+	public static ArrayList CurrentUnitsR;
     // Use this for initialization
 
-    public int alen;
-    public int blen;
+	[SyncVar]
+    public int alen = 0;
+    [SyncVar]
+	public int blen = 0;
 
     void Start()
     {
         CurrentUnitsB = new ArrayList();
         CurrentUnitsR = new ArrayList();
+		
+		
+		if (!isServer) {
+			return;
+		}
+		InvokeRepeating("checkWin", 15.0f, 15.0f);
         //InvokeRepeating("Update", 1f, 1f);
     }
-
+	
+	
     void checkWin()
     {
         Debug.Log("Checkingisit?? " + "alen " + alen + " blen" + blen);
-        if (CurrentUnitsB.Count <= 0)
+        if (alen <= 0)
         {
             // Time.timeScale = 0.1f;
             //faction Blue wins
             Debug.Log("Red Wins!!!");
 
         }
-        else if (CurrentUnitsR.Count <= 0)
+        else if (blen <= 0)
         {
             //Time.timeScale = 0.1f;
             //Faction red wins 
@@ -45,7 +54,6 @@ public class FactionList : NetworkBehaviour
         {
             return;
         }
-        InvokeRepeating("checkWin", 15.0f, 15.0f);
         //yield return new WaitForSeconds(15.0f);
         // Thread.Sleep(15000);
 

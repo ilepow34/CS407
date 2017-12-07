@@ -121,7 +121,10 @@ public class Unit : NetworkBehaviour
     // Use this for initialization
     void OnTriggerEnter(Collider other)
     {
-
+		if(!hasAuthority) {
+			return;
+		}
+		
         if (other.tag == "Unit")
         {
 
@@ -157,6 +160,10 @@ public class Unit : NetworkBehaviour
     }
 	
 	void OnTriggerExit(Collider other){
+				if(!hasAuthority) {
+			return;
+		}
+		
 		if(other.tag == "Unit"){
 			Unit collunit = other.gameObject.GetComponentInParent<Unit>();
 			if(collunit == triggeredUnit){
@@ -168,6 +175,10 @@ public class Unit : NetworkBehaviour
     // Update is called once per frame
     public void OnTriggerStay(Collider other)
     {
+				if(!hasAuthority) {
+			return;
+		}
+		
        // Debug.Log(other.tag + "is other tag???");
         if (other.tag == "Unit")
         {

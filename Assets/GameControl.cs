@@ -149,6 +149,12 @@ public class GameControl : NetworkBehaviour {
 		gameManager.unitCost = costs[unit];
 	}
 
+    //returns player faction
+    public static bool getFaction()
+    {
+        return plyrfaction;
+    }
+
     // this is just a sleep timer essentially to allow both clients to load the game before begging to spawn units.
     //
     // runs on client.

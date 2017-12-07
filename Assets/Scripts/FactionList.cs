@@ -8,7 +8,8 @@ public class FactionList : NetworkBehaviour
     public ArrayList CurrentUnitsB;
     public ArrayList CurrentUnitsR;
     // Use this for initialization
-
+    [SyncVar]
+    public int status = 0;
     [SyncVar]
     public int alen = 0;
     [SyncVar]
@@ -18,31 +19,34 @@ public class FactionList : NetworkBehaviour
     {
         CurrentUnitsB = new ArrayList();
         CurrentUnitsR = new ArrayList();
-		
-		
-		if (!isServer) {
-			return;
-		}
-		InvokeRepeating("checkWin", 15.0f, 15.0f);
+
+
+        if (!isServer)
+        {
+            return;
+        }
+        InvokeRepeating("checkWin", 15.0f, 15.0f);
         //InvokeRepeating("Update", 1f, 1f);
     }
-	
-	
+
+
     void checkWin()
     {
         Debug.Log("Checkingisit?? " + "alen " + alen + " blen " + blen);
         if (alen <= 0)
         {
-            // Time.timeScale = 0.1f;
+            Time.timeScale = 0.05f;
             //faction Blue wins
             Debug.Log("Blue Wins!!!");
+            status = 1;
 
         }
         else if (blen <= 0)
         {
-            //Time.timeScale = 0.1f;
+            Time.timeScale = 0.05f;
             //Faction red wins 
             Debug.Log("Red Wins!!!");
+            status = 2;
         }
 
     }
@@ -64,7 +68,7 @@ public class FactionList : NetworkBehaviour
     //[Command]
     public void AddUnit(NetworkInstanceId netId)
     {
-	Unit newspawn = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
+        Unit newspawn = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
         if (newspawn.faction)
         {
             CurrentUnitsR.Add(newspawn);
@@ -78,7 +82,7 @@ public class FactionList : NetworkBehaviour
     [ClientRpc]
     public void RpcAddUnit(NetworkInstanceId netId)
     {
-	Unit newspawn = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
+        Unit newspawn = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
         if (newspawn.faction)
         {
             CurrentUnitsR.Add(newspawn);
@@ -91,7 +95,7 @@ public class FactionList : NetworkBehaviour
     [ClientRpc]
     public void RpcRemoveUnit(NetworkInstanceId netId)
     {
-	Unit unt = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
+        Unit unt = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
 
         Debug.Log(unt.type);
         if (unt.faction)
@@ -111,10 +115,10 @@ public class FactionList : NetworkBehaviour
 
 
     }
-   // [Command]
+    // [Command]
     public void RemoveUnit(NetworkInstanceId netId)
     {
-	Unit unt = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
+        Unit unt = NetworkServer.FindLocalObject(netId).GetComponent<Unit>();
 
 
         Debug.Log(unt.type);

@@ -1,5 +1,5 @@
 ﻿using System;
 
 public enum UnitEnum
-{Building, Builder};
+{Building, Builder, Tank, Soldier, DefenseTower};
 

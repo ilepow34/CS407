@@ -14,6 +14,9 @@ public class GameControl : NetworkBehaviour {
 	public GameObject mousedot;
 	public GameObject bldg;
 	public GameObject builderPrefab;
+	public GameObject soldierPrefab;
+	public GameObject tankPrefab;
+	public GameObject defenseTowerPrefab;
 	public GameObject unitToSpawn;
     public GameObject[] gos;
    // public GameObject[] spsB;
@@ -85,6 +88,15 @@ public class GameControl : NetworkBehaviour {
 		}
 		if (uEnum == UnitEnum.Building) {
 			go = Instantiate(bldg, position,rotation) as GameObject;
+		}
+		if (uEnum == UnitEnum.Tank) {
+			go = Instantiate(tankPrefab, position,rotation) as GameObject;
+		}
+		if (uEnum == UnitEnum.Soldier) {
+			go = Instantiate(soldierPrefab, position,rotation) as GameObject;
+		}
+		if (uEnum == UnitEnum.DefenseTower) {
+			go = Instantiate(defenseTowerPrefab, position,rotation) as GameObject;
 		}
 
 		if (go == null) {
@@ -300,7 +312,11 @@ public class GameControl : NetworkBehaviour {
 						if (!CurrentlySelectedUnits.Contains (go)) {
 							Debug.Log ("Adding unit to list");
 							CurrentlySelectedUnits.Add (go);
-							go.transform.Find("Selected").gameObject.SetActive(true);
+							if (go.transform != null) {
+								if (go.transform.Find ("Selected") != null) {
+									go.transform.Find ("Selected").gameObject.SetActive (true);
+								}
+							}
 						}
 						Debug.Log ("Unit found");
 					} else if (UnitAlreadyInCurrentlySelectedUnits(go)) {
@@ -347,7 +363,12 @@ public class GameControl : NetworkBehaviour {
 			for(int i = 0; i < CurrentlySelectedUnits.Count; i++)
 			{
 				GameObject arrayListUnit = CurrentlySelectedUnits[i] as GameObject;
-				arrayListUnit.transform.Find("Selected").gameObject.SetActive(false);
+				if (arrayListUnit.transform != null) {
+					if (arrayListUnit.transform.Find ("Selected") != null) {
+						if (arrayListUnit.transform.Find ("Selected").gameObject != null)
+							arrayListUnit.transform.Find ("Selected").gameObject.SetActive (false);
+					}
+				}
 			}
 			CurrentlySelectedUnits.Clear();
 		}

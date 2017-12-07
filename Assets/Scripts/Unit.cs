@@ -233,7 +233,8 @@ public class Unit : NetworkBehaviour
     public void NavMeshMoveUnit(Transform target)
     {
 		UnityEngine.AI.NavMeshAgent navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-		navMeshAgent.SetDestination(target.position);
+		if (navMeshAgent != null)
+			navMeshAgent.SetDestination(target.position);
     }
 
     public void attack(Transform target)

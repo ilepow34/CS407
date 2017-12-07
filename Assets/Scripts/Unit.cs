@@ -98,12 +98,11 @@ public class Unit : NetworkBehaviour
         //wallTxt.transform.LookAt(Camera.main.transform.position, Vector3.right);
 
   
-        if (faction)
-        {
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
-            //gameObject.GetComponent<Renderer>. = Color.red;
 
-        }
+			MeshRenderer[] mrs = GetComponentsInChildren<MeshRenderer>();
+			for (int i = 0; i < mrs.Length; i++) {
+				mrs[i].material.color = !faction ? Color.blue : Color.red;
+			}
         MaxHealth = TreeHealth;
         unitlist = GameObject.Find("mgrGame");
     }
@@ -122,6 +121,11 @@ public class Unit : NetworkBehaviour
     void OnTriggerEnter(Collider other)
     {
 		if(!hasAuthority) {
+			return;
+		}
+		
+		if (other.tag == "Hitbox") {
+			Debug.Log("Entered hitbox range");
 			return;
 		}
 		
@@ -160,7 +164,12 @@ public class Unit : NetworkBehaviour
     }
 	
 	void OnTriggerExit(Collider other){
-				if(!hasAuthority) {
+		if(!hasAuthority) {
+			return;
+		}
+		
+		if (other.tag == "Hitbox") {
+			Debug.Log("It is in the hitbox range");
 			return;
 		}
 		
@@ -175,7 +184,11 @@ public class Unit : NetworkBehaviour
     // Update is called once per frame
     public void OnTriggerStay(Collider other)
     {
-				if(!hasAuthority) {
+		if(!hasAuthority) {
+			return;
+		}
+		
+		if (other.tag == "Hitbox") {
 			return;
 		}
 		

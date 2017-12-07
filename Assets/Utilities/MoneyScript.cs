@@ -14,8 +14,8 @@ public class MoneyScript : MonoBehaviour {
 	void Start () {
 		GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
 		gameManager.money = 100; 
-		moneyTimer = 10.0f;
-		timerInterval = 10.0f;
+		moneyTimer = 2.0f;
+		timerInterval = 2.0f;
 		intervalAmount = 50;
 	}
 	

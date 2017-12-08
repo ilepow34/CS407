@@ -231,7 +231,8 @@ public class GameControl : NetworkBehaviour {
 					if (gameManager.money >= gameManager.unitCost)
                     {
 
-                        float closestDist = float.MaxValue;
+                        float closestTeam = float.MaxValue;
+                        float closestEnemy = float.MaxValue;
                         Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
                         GameObject[] units = GameObject.FindGameObjectsWithTag("Unit");
                         for (int i = 0; i < units.Length; i++) {
@@ -240,22 +241,24 @@ public class GameControl : NetworkBehaviour {
                             if (unit == null) {
                                 continue;
                             }
-                            if (unit.type != "barracks" || unit.faction != plyrfaction) {
+                            if (unit.type != "barracks") {
                                 continue;
                             }
 
                             Vector2 objPos = Camera.main.WorldToScreenPoint(obj.transform.position);
                             float curDist = Vector2.Distance(mousePos, objPos);
-                            if (curDist < closestDist) {
-                                closestDist = curDist;
+
+                            if (curDist < closestTeam) {
+                                closestTeam = curDist;
+                            }
+                            if (curDist < closestEnemy) {
+                                closestEnemy = curDist;
                             }
                         }
 
-                        if (closestDist <= 100.0f || closestDist >= 500.0f) {
+                        if (closestTeam <= 100.0f || closestEnemy <= 100.0f || closestTeam >= 400) {
                             return;
                         }
-
-                        Debug.Log("Closest barracks was: " + closestDist);
 
 						CmdSpawnUnit(gameManager.unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
 						/*

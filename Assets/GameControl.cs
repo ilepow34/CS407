@@ -203,29 +203,9 @@ public class GameControl : NetworkBehaviour {
 			runOnce = true;	
 		}
 
-        // assuming screen height of 600 px
-        // we should ignore all hits on bottom 100
-
-        float percentToIgnore = 135.0f / 600.0f;
-        float currentPercent = Input.mousePosition[1] / Screen.height;
-        if (currentPercent < percentToIgnore) {
-            isSelecting = false;
-            return;
-        }
-
-
-		//ray casting to find out where the ground is and what is moveable	
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-        if (!Physics.Raycast(ray, out hit, Mathf.Infinity)) {
-            return;
-        }
-			
 		// If we press the left mouse button, save mouse location and begin selection
 		if( Input.GetMouseButtonDown( 0 ) )
 		{
-            // check if it hit a UI element?
-
-
 			DeselectGameObjectsIfSelected ();
 			isSelecting = true;
 			mousePosition1 = Input.mousePosition;
@@ -234,15 +214,38 @@ public class GameControl : NetworkBehaviour {
 		if (Input.GetMouseButtonUp (0)) {
 			isSelecting = false;
 		}
-		//if(Physics.Raycast(ray, out hit, Mathf.Infinity)){
+		//ray casting to find out where the ground is and what is moveable	
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			
+		if(Physics.Raycast(ray, out hit, Mathf.Infinity)){
 			// store point at mouse button down
 			if(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2)|| Input.GetMouseButtonDown(1)) mouseDownPoint = hit.point;
 
-				
-            if (hit.transform.tag == "Ground" || hit.collider.tag == "UnitCreation")
+            if (hit.transform.tag == "Ground")
             {
 				//Unit/building spawning
-               
+                if (Input.GetMouseButtonDown(2))
+                {
+                    Debug.Log("build is pressed");
+                    GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
+					if (gameManager.money >= gameManager.unitCost)
+                    {
+						CmdSpawnUnit(gameManager.unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+						/*
+						if (gameManager.unitToSpawn == UnitEnum.Building) {
+							CmdSpawnBuilding(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+						}
+						if (gameManager.unitToSpawn == UnitEnum.Builder) {
+							CmdSpawnInitBuilder(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+						}
+						*/
+						gameManager.money -= gameManager.unitCost;
+                    }
+                    else
+                    {
+                        Debug.Log("Not enough money");
+                    }
+                }
 
 
                 if (Input.GetMouseButtonDown(1))
@@ -259,12 +262,10 @@ public class GameControl : NetworkBehaviour {
                 }
             }// end of Ground
              
-
-			 
             else if (hit.transform.tag == "Unit" || hit.transform.tag == "Bldg")
             {
                 if (hit.transform.tag == "Bldg")
-                   // Debug.Log("AAHHHH");
+                    Debug.Log("AAHHHH");
                 // hitting other objects
                 if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
                 {
@@ -272,7 +273,7 @@ public class GameControl : NetworkBehaviour {
                     if (hit.collider.transform.Find("Selected"))
                     {
                         // found a selectable unit
-                      //  Debug.Log(CurrentlySelectedUnits.Count);
+                        Debug.Log(CurrentlySelectedUnits.Count);
                         Unit collunit = hit.collider.GetComponentInParent<Unit>();
                         if (collunit.getFaction() == plyrfaction)
                         {
@@ -289,7 +290,7 @@ public class GameControl : NetworkBehaviour {
 
                                 for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
                                 {
-                                   // Debug.Log("attaccc");
+                                    Debug.Log("attaccc");
                                     Unit unit = ((GameObject)CurrentlySelectedUnits[i]).GetComponent<Unit>();
                                     unit.attack(Target.transform);
                                 }
@@ -303,10 +304,11 @@ public class GameControl : NetworkBehaviour {
                         DeselectGameObjectsIfSelected();
                     }
                 }
-          //  }
-//            Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.yellow);
+            }
+            Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.yellow);
 		}
 	}
+
 
 	void OnGUI()
 	{

@@ -218,7 +218,28 @@ public class GameControl : NetworkBehaviour {
 			// store point at mouse button down
 			if(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2)|| Input.GetMouseButtonDown(1)) mouseDownPoint = hit.point;
 
-				if(hit.collider.tag == "UnitCreation"){
+				
+            if (hit.transform.tag == "Ground")
+            {
+				//Unit/building spawning
+               
+
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    Target.transform.position = hit.point;
+
+                    for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+                    {
+                        Debug.Log("move");
+						Debug.Log (CurrentlySelectedUnits.Count);
+                        Unit unit = ((GameObject)CurrentlySelectedUnits[i]).GetComponent<Unit>();
+                        unit.NavMeshMoveUnit(Target.transform);
+                    }
+                }
+            }// end of Ground
+             
+			 if(hit.collider.tag == "UnitCreation"){
 					Debug.Log("It hit Unit Creation tag");
 					if (Input.GetMouseButtonDown(2))
 					{
@@ -243,26 +264,7 @@ public class GameControl : NetworkBehaviour {
 						}
 					}
 				}
-            if (hit.transform.tag == "Ground")
-            {
-				//Unit/building spawning
-               
-
-
-                if (Input.GetMouseButtonDown(1))
-                {
-                    Target.transform.position = hit.point;
-
-                    for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
-                    {
-                        Debug.Log("move");
-						Debug.Log (CurrentlySelectedUnits.Count);
-                        Unit unit = ((GameObject)CurrentlySelectedUnits[i]).GetComponent<Unit>();
-                        unit.NavMeshMoveUnit(Target.transform);
-                    }
-                }
-            }// end of Ground
-             
+			 
             else if (hit.transform.tag == "Unit" || hit.transform.tag == "Bldg")
             {
                 if (hit.transform.tag == "Bldg")

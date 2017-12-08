@@ -221,7 +221,7 @@ public class GameControl : NetworkBehaviour {
 			// store point at mouse button down
 			if(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2)|| Input.GetMouseButtonDown(1)) mouseDownPoint = hit.point;
 
-            if (hit.transform.tag == "Ground")
+            if (hit.transform.tag == "Ground" || hit.collider.tag == "UnitCreation")
             {
 				//Unit/building spawning
                 if (Input.GetMouseButtonDown(2))

@@ -25,7 +25,7 @@ public class Hideshowgui : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+   void Update()
     {
         statusg = fl.status;
 

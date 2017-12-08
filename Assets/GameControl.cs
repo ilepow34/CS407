@@ -219,7 +219,7 @@ public class GameControl : NetworkBehaviour {
 			if(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2)|| Input.GetMouseButtonDown(1)) mouseDownPoint = hit.point;
 
 				
-            if (hit.transform.tag == "Ground")
+            if (hit.transform.tag == "Ground" || hit.collider.tag == "UnitCreation")
             {
 				//Unit/building spawning
                

@@ -100,7 +100,7 @@ public class FactionList : NetworkBehaviour
         Debug.Log(unt.type);
         if (unt.faction)
         {
-            Debug.Log("REM FROM RED");
+            Debug.Log("REM FROM REDRPC");
             CurrentUnitsR.Remove(unt);
         }
         else
@@ -122,9 +122,11 @@ public class FactionList : NetworkBehaviour
 
 
         Debug.Log(unt.type);
+        int prevalen = alen;
+        int prevblen = blen;
         if (unt.faction)
         {
-            Debug.Log("REM FROM RED");
+            Debug.Log("REM FROM REDS");
             CurrentUnitsR.Remove(unt);
         }
         else
@@ -135,6 +137,10 @@ public class FactionList : NetworkBehaviour
 
         alen = CurrentUnitsR.Count;
         blen = CurrentUnitsB.Count;
+        if (unt.type.Equals("barracks") && alen == prevalen && alen == 1 && unt.faction)
+            alen=0;
+        else if (unt.type.Equals("barracks") && blen == prevblen && blen == 1 && !unt.faction)
+            blen=0;
         Debug.Log("REM:alen " + alen + " blen" + blen);
 
 

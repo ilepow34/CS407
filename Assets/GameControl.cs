@@ -264,8 +264,9 @@ public class GameControl : NetworkBehaviour {
 					if (Input.GetMouseButtonDown(2))
 					{
 						Debug.Log("build is pressed");
-						GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
-						if (gameManager.money >= gameManager.unitCost)
+						if(hit.collider.GetComponentInParent<Unit>().getFaction() == plyrfaction){
+							GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
+							if (gameManager.money >= gameManager.unitCost)
 						{
 							CmdSpawnUnit(gameManager.unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
 							/*
@@ -281,6 +282,7 @@ public class GameControl : NetworkBehaviour {
 						else
 						{
 							//Debug.Log("Not enough money");
+						}
 						}
 					}
 				}

@@ -259,33 +259,7 @@ public class GameControl : NetworkBehaviour {
                 }
             }// end of Ground
              
-			 if(hit.collider.tag == "UnitCreation"){
-					//Debug.Log("It hit Unit Creation tag");
-					if (Input.GetMouseButtonDown(2))
-					{
-						Debug.Log("build is pressed");
-						if(hit.collider.GetComponentInParent<Unit>().getFaction() == plyrfaction){
-							GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
-							if (gameManager.money >= gameManager.unitCost)
-						{
-							CmdSpawnUnit(gameManager.unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
-							/*
-							if (gameManager.unitToSpawn == UnitEnum.Building) {
-								CmdSpawnBuilding(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
-							}
-							if (gameManager.unitToSpawn == UnitEnum.Builder) {
-								CmdSpawnInitBuilder(mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
-							}
-							*/
-							gameManager.money -= gameManager.unitCost;
-						}
-						else
-						{
-							//Debug.Log("Not enough money");
-						}
-						}
-					}
-				}
+
 			 
             else if (hit.transform.tag == "Unit" || hit.transform.tag == "Bldg")
             {

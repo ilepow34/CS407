@@ -230,6 +230,33 @@ public class GameControl : NetworkBehaviour {
                     GameManager gameManager = Toolbox.RegisterComponent<GameManager>();
 					if (gameManager.money >= gameManager.unitCost)
                     {
+
+                        float closestDist = float.MaxValue;
+                        Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                        GameObject[] units = GameObject.FindGameObjectsWithTag("Unit");
+                        for (int i = 0; i < units.Length; i++) {
+                            GameObject obj = units[i];
+                            Unit unit = obj.GetComponent<Unit>();
+                            if (unit == null) {
+                                continue;
+                            }
+                            if (unit.type != "barracks" || unit.faction != plyrfaction) {
+                                continue;
+                            }
+
+                            Vector2 objPos = Camera.main.WorldToScreenPoint(obj.transform.position);
+                            float curDist = Vector2.Distance(mousePos, objPos);
+                            if (curDist < closestDist) {
+                                closestDist = curDist;
+                            }
+                        }
+
+                        if (closestDist <= 100.0f || closestDist >= 500.0f) {
+                            return;
+                        }
+
+                        Debug.Log("Closest barracks was: " + closestDist);
+
 						CmdSpawnUnit(gameManager.unitToSpawn, mouseDownPoint, Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
 						/*
 						if (gameManager.unitToSpawn == UnitEnum.Building) {

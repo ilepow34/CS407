@@ -150,11 +150,11 @@ public class Unit : NetworkBehaviour
 		GameObject toDelete = (spawnTime < collunit.spawnTime) ? collunit.gameObject : gameObject;
 
         	NetworkIdentity networkIdentity = toDelete.GetComponent<NetworkIdentity>();
-		CmdDestroyNetworkIdentity(toDelete.GetComponent<NetworkIdentity>().netId);
+		//CmdDestroyNetworkIdentity(toDelete.GetComponent<NetworkIdentity>().netId);
 
 		// TODO: give the player that lost the barracks their money back?
 
- 	        Debug.Log("delete one of the units.");
+ 	        //Debug.Log("delete one of the units.");
 		return;
             }
 		    
@@ -231,7 +231,7 @@ public class Unit : NetworkBehaviour
 					}
 				}
                 else{
-					Debug.Log("Not triggered Unit");
+					//Debug.Log("Not triggered Unit");
 				}
             }
 

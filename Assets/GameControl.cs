@@ -178,6 +178,8 @@ public class GameControl : NetworkBehaviour {
 
 
         }
+        CmdSpawnUnit(UnitEnum.Building, new Vector3(plyrfaction ? -50.0f : 0.0f, 0.0f, 100.0f),
+                           Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, !plyrfaction);
     }
 				
 	//SceneManager.LoadScene("Game");

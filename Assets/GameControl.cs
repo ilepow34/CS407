@@ -240,7 +240,7 @@ public class GameControl : NetworkBehaviour {
             }// end of Ground
              
 			 if(hit.collider.tag == "UnitCreation"){
-					Debug.Log("It hit Unit Creation tag");
+					//Debug.Log("It hit Unit Creation tag");
 					if (Input.GetMouseButtonDown(2))
 					{
 						Debug.Log("build is pressed");
@@ -268,7 +268,7 @@ public class GameControl : NetworkBehaviour {
             else if (hit.transform.tag == "Unit" || hit.transform.tag == "Bldg")
             {
                 if (hit.transform.tag == "Bldg")
-                    Debug.Log("AAHHHH");
+                   // Debug.Log("AAHHHH");
                 // hitting other objects
                 if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
                 {

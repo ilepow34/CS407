@@ -389,7 +389,7 @@ public class GameControl : NetworkBehaviour {
 			return true; else return false;
 	}
 	// deselects game object if selected
-	public void DeselectGameObjectsIfSelected()
+	public static void DeselectGameObjectsIfSelected()
 	{
 		if (CurrentlySelectedUnits.Count > 0)
 		{

@@ -13,6 +13,15 @@ public class UnitThumnail : MonoBehaviour {
 	void Start () {
 	    imageComponent = GetComponent<Image>();	
 	}
+
+    public void selectUnit()
+    {
+
+        GameControl.DeselectGameObjectsIfSelected();
+
+        GameControl.CurrentlySelectedUnits.Add(unit.gameObject);
+        unit.gameObject.transform.Find("Selected").gameObject.SetActive(true);
+    }
 	
 	// Update is called once per frame
 	void Update () {

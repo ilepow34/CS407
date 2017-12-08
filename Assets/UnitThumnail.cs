@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class UnitThumnail : MonoBehaviour {
     public Sprite soldierSprite, builderSprite, tankSprite, defaultSprite;
-    public UnitEnum type = UnitEnum.Default;
     private Image imageComponent = null;
+
+    public Unit unit;
 
 	// Use this for initialization
 	void Start () {
@@ -18,21 +19,17 @@ public class UnitThumnail : MonoBehaviour {
         if (imageComponent == null) {
             return;
         }
-	    switch (type) {
-            case UnitEnum.Builder:
-                imageComponent.sprite = builderSprite;
-                break;
-            case UnitEnum.Tank:
-                imageComponent.sprite = tankSprite;
-                break;
-            case UnitEnum.Soldier:
-                imageComponent.sprite = soldierSprite;
-                break;
-            case UnitEnum.Default:
-                imageComponent.sprite = defaultSprite;
-                break;
-            default:
-                break;
+        if (unit == null) {
+            imageComponent.sprite = defaultSprite;
+            return;
+        }
+        
+        if (unit.type == "builder") {
+            imageComponent.sprite = builderSprite;
+        } else if (unit.type == "soldier") {
+            imageComponent.sprite = soldierSprite;
+        } else if (unit.type == "tank") {
+            imageComponent.sprite = tankSprite;
         }
 	}
 }

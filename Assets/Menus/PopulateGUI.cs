@@ -7,39 +7,39 @@ public class PopulateGUI : MonoBehaviour
 {
 	public GameObject tile; // the prefab to spawn in scrollview
 
-
-    // for debugging
-    UnitEnum randomEnum()
-    {
-        // types I need are: Builder, Soldier, Default, Tank
-        int num = Random.Range(0, 4);
-        if (num == 0) {
-            return UnitEnum.Builder;
-        } else if (num == 1) {
-            return UnitEnum.Soldier;
-        } else if (num == 2) {
-            return UnitEnum.Tank;
-        }
-        return UnitEnum.Default;
-    }
-	
 	void Start()
 	{
-		// debug code to test filling in the grid with stuff
-		
-		GameObject newObj;
-		int numToCreate = 30;
-		for (int i = 0; i < numToCreate; i++) {
-			newObj = (GameObject)Instantiate(tile, transform);
-            UnitThumnail thumnail = newObj.GetComponent<UnitThumnail>();
-            thumnail.type = randomEnum();
-			//newObj.transform.SetParent(transform, false);
-		}
-
-	}
+    }
 
 	void Update()
 	{
-		// get the selected units here and populate the grid from it
-	}
+
+        ArrayList selectedUnits = GameControl.CurrentlySelectedUnits;
+        UnitThumnail[] thumnails = GetComponentsInChildren<UnitThumnail>();
+
+        int loopCount = selectedUnits.Count;
+        for (int i = 0; i < loopCount; i++) {
+
+            // make sure it is visible if it is in here
+
+            Unit curUnit = ((GameObject)selectedUnits[i]).GetComponent<Unit>();
+            if (thumnails.Length > i) {
+                if (thumnails[i] != null && thumnails[i].unit != curUnit) {
+                    thumnails[i].unit = curUnit;
+                }
+            } else {
+                // create since we need another thumnail
+                GameObject newObj = (GameObject)Instantiate(tile, transform);
+                newObj.GetComponent<UnitThumnail>().unit = curUnit;
+            }
+        }
+        
+        if (thumnails.Length > loopCount) {
+            // hide last thumnails
+            for (int i = loopCount; i < thumnails.Length; i++) {
+                Destroy(thumnails[i].gameObject);
+            }
+        }
+
+    }
 }

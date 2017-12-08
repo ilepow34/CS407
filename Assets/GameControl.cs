@@ -260,7 +260,7 @@ public class GameControl : NetworkBehaviour {
 						}
 						else
 						{
-							Debug.Log("Not enough money");
+							//Debug.Log("Not enough money");
 						}
 					}
 				}
@@ -276,7 +276,7 @@ public class GameControl : NetworkBehaviour {
                     if (hit.collider.transform.Find("Selected"))
                     {
                         // found a selectable unit
-                        Debug.Log(CurrentlySelectedUnits.Count);
+                      //  Debug.Log(CurrentlySelectedUnits.Count);
                         Unit collunit = hit.collider.GetComponentInParent<Unit>();
                         if (collunit.getFaction() == plyrfaction)
                         {
@@ -293,7 +293,7 @@ public class GameControl : NetworkBehaviour {
 
                                 for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
                                 {
-                                    Debug.Log("attaccc");
+                                   // Debug.Log("attaccc");
                                     Unit unit = ((GameObject)CurrentlySelectedUnits[i]).GetComponent<Unit>();
                                     unit.attack(Target.transform);
                                 }
@@ -308,7 +308,7 @@ public class GameControl : NetworkBehaviour {
                     }
                 }
             }
-            Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.yellow);
+//            Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.yellow);
 		}
 	}
 
@@ -332,7 +332,7 @@ public class GameControl : NetworkBehaviour {
 								}
 							}
 						}
-						Debug.Log ("Unit found");
+	//					Debug.Log ("Unit found");
 					} else if (UnitAlreadyInCurrentlySelectedUnits(go)) {
 						RemoveUnitFromCurrentlySelectedUnits(go);
 						// deselect?

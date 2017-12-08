@@ -169,15 +169,16 @@ public class GameControl : NetworkBehaviour {
         Debug.Log("Calling shit?");
         CmdSpawnUnit(UnitEnum.Builder, new Vector3(plyrfaction ? 0.0f : 0.0f, 0.0f, 0.0f),
                             Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
-
-        for (int i = 0; i < gos.Length; i++)
+        CmdSpawnUnit(UnitEnum.Building, new Vector3(-50.0f , 0.0f, -100.0f),
+                           Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
+        /*for (int i = 0; i < gos.Length; i++)
         {
             Vector3 vct = plyrfaction ? new Vector3(-50.0f * i, 0.0f, 100.0f) : new Vector3(-50.0f * i, 0.0f, -100.0f);
             CmdSpawnUnitGo(gos[i], vct,
                            Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, plyrfaction);
 
 
-        }
+        }*/
         CmdSpawnUnit(UnitEnum.Building, new Vector3(plyrfaction ? -50.0f : 0.0f, 0.0f, 100.0f),
                            Quaternion.identity, Toolbox.RegisterComponent<NetworkData>().client.connection.connectionId, !plyrfaction);
     }
